@@ -77,9 +77,9 @@ if ($total_data > 0) {
             </a>
             <div class="text-muted small d-flex align-items-center justify-content-center mt-2">
                 Formato: ' . $formato . '
-                <i class="fa fa-info-circle text-muted ms-1" 
-                   data-bs-toggle="tooltip" 
-                   data-bs-html="true" 
+                <i class="fa fa-info-circle text-muted ml-1" 
+                   data-toggle="tooltip" 
+                   data-html="true" 
                    title="' . htmlspecialchars($tooltipContent) . '"></i>
             </div>';
     if ($canDelete) {
@@ -170,15 +170,9 @@ $output .= '</ul></div>';
 
 echo $output;
 ?>
-<!-- Script para inicializar tooltips -->
+<!-- Tooltips Bootstrap 4 (jQuery) -->
 <script>
-  $(document).ready(function() {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl, {
-        html: true, // Permite HTML no conteúdo do tooltip
-        placement: 'top' // Ajusta conforme necessário
-      })
-    })
-  });
+$(function () {
+  $('#etapa5_anexos [data-toggle="tooltip"]').tooltip({ html: true, placement: 'top' });
+});
 </script>

@@ -47,8 +47,8 @@ if (isset($_GET["id"])) {
                     <div class="text-muted small d-flex align-items-center justify-content-center">
                         Formato: ' . $formato . '
                         <i class="fa fa-info-circle text-muted ml-1"
-                           data-bs-toggle="tooltip"
-                           data-bs-html="true"
+                           data-toggle="tooltip"
+                           data-html="true"
                            title="' . htmlspecialchars($tooltipContent) . '"></i>
                     </div>';
 			if ($canDelete) {

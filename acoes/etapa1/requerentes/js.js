@@ -53,7 +53,7 @@ function deletarRequerente(id, status) {
                     spinner.hide();
                     $('#dynamic_content_requerentes').css("opacity", "");
                     Swal.fire({
-                        title: response.tittle,
+                        title: jsonResponseTitle(response),
                         html: response.message,
                         icon: response.icon
                     });
@@ -158,7 +158,7 @@ $(document).ready(function () {
                 spinner.hide();
                 $('#content').css("opacity", "");
                 Swal.fire({
-                    title: response.tittle,
+                    title: jsonResponseTitle(response),
                     html: response.message,
                     icon: response.icon
                 });
@@ -209,7 +209,7 @@ $(document).ready(function () {
                 spinner.hide();
                 $('#content').css("opacity", "");
                 Swal.fire({
-                    title: response.tittle,
+                    title: jsonResponseTitle(response),
                     html: response.message,
                     icon: response.icon
                 });
@@ -259,7 +259,7 @@ $(document).ready(function () {
                 spinner.hide();
                 $('#content').css("opacity", "");
                 Swal.fire({
-                    title: response.tittle,
+                    title: jsonResponseTitle(response),
                     html: response.message,
                     icon: response.icon
                 });

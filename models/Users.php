@@ -51,21 +51,21 @@ class Users extends model
 
 	public function isAdmin()
 	{
-		if ($this->isAdmin == '1') {
-			return true;
-		} else {
-			return false;
-		}
+		return (int) $this->isAdmin === 1;
 	}
 
 	public function hasPermission($permission_slug)
 	{
+		// Administrador (admin = 1) tem acesso a todas as permissões do sistema
+		if ($this->isAdmin()) {
+			return true;
+		}
 
 		if (in_array($permission_slug, $this->permissions)) {
 			return true;
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
 

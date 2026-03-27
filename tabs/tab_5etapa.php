@@ -1,6 +1,6 @@
 <?php if ($viewData['user']->hasPermission('processo_5etapa')) : ?>
 
-    <div class="tab-pane" id="5etapa" aria-labelledby="5etapa-tab">
+    <div class="etapa5-inner" id="etapa5-inner">
         <input type="hidden" name="id" id="id" value="<?php echo $id; ?>">
         <input type="hidden" name="idProcedimento" id="idProcedimento" value="<?php echo $id; ?>">
         <input type="hidden" name="idMunicipio" id="idMunicipio" value="<?php echo $idMunicipio; ?>">
@@ -100,8 +100,8 @@
                 <button
                     id="btnGerarZipEtapa5"
                     class="btn btn-outline-success d-flex align-items-center gap-2"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="left"
+                    data-toggle="tooltip"
+                    data-placement="left"
                     title="Gerar um arquivo ZIP com todos os documentos">
                     <i class="fa fa-file-archive-o fa-lg"></i>
                     <span>Gerar ZIP (documentos)</span>
@@ -147,6 +147,7 @@
                 }
             });
         }
+        window.carregarModelosEtapa5 = carregarModelosEtapa5;
      
     </script>
 

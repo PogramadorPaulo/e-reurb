@@ -33,11 +33,17 @@ $('#etapa2_search_query').on('input', function () {
 
 
 
-// Carregar anexos assim que a página é inicializada
-$(document).ready(function () {
-    const id = $('#id').val();
-    carregarAnexosEpata2(1, id); // Carrega a primeira página dos anexos
-});
+(function () {
+    function loadAnexosEtapa2() {
+        const id = $('#id').val();
+        carregarAnexosEpata2(1, id);
+    }
+    if (window.EtapasTabs) {
+        EtapasTabs.registerInit(2, loadAnexosEtapa2);
+    } else {
+        $(document).ready(loadAnexosEtapa2);
+    }
+})();
 
 // Arrasta e solta o arquivo de upload // 
 document.addEventListener('DOMContentLoaded', function () {

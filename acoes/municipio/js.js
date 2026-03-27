@@ -103,7 +103,7 @@ $(document).ready(function () {
 
                 // SweetAlert para o usuário
                 Swal.fire({
-                    title: response.tittle,
+                    title: jsonResponseTitle(response),
                     html: response.message,
                     icon: response.icon // Ícone da resposta (success, warning, error, etc.)
                 });
@@ -160,7 +160,7 @@ $(document).ready(function () {
 
                 // SweetAlert para o usuário
                 Swal.fire({
-                    title: response.tittle,
+                    title: jsonResponseTitle(response),
                     html: response.message,
                     icon: response.icon // Ícone da resposta (success, warning, error, etc.)
                 });
@@ -361,7 +361,7 @@ $(document).ready(function () {
                 $('#uploadLogoModal').css('opacity', '').modal('hide');
 
                 Swal.fire({
-                    title: response.tittle,
+                    title: jsonResponseTitle(response),
                     text: response.message,
                     icon: response.icon,
                 });

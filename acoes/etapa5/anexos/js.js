@@ -27,17 +27,26 @@ $(document).on('click', '.page-link', function () {
 // Evento de pesquisa dinâmica no input de pesquisa
 $('#etapa5_search_query').on('input', function () {
     const query = $(this).val().trim(); // Pega o valor digitado
-    const id = $('#iidProcedimentod').val();
+    const id = $('#idProcedimento').val();
     carregarAnexosEtapa5(1, id, query); // Recarrega anexos na página 1 com a pesquisa
 });
 
 
 
-// Carregar anexos assim que a página é inicializada
-$(document).ready(function () {
-    const id = $('#idProcedimento').val();
-    carregarAnexosEtapa5(1, id); // Carrega a primeira página dos anexos
-});
+(function () {
+    function loadEtapa5() {
+        const id = $('#idProcedimento').val();
+        carregarAnexosEtapa5(1, id);
+        if (typeof window.carregarModelosEtapa5 === 'function') {
+            window.carregarModelosEtapa5();
+        }
+    }
+    if (window.EtapasTabs) {
+        EtapasTabs.registerInit(5, loadEtapa5);
+    } else {
+        $(document).ready(loadEtapa5);
+    }
+})();
 
 // Arrasta e solta o arquivo de upload // 
 document.addEventListener('DOMContentLoaded', function () {

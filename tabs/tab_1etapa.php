@@ -1,7 +1,7 @@
  <?php if ($viewData['user']->hasPermission('processo_1etapa')) : ?>
      <input type="hidden" name="idProcedimento" id="idProcedimento" value="<?php echo $id; ?>">
      <input type="hidden" name="idMunicipio" id="idMunicipio" value="<?php echo $idMunicipio; ?>">
-     <div class="tab-pane" id="1etapa" role="tabpanel">
+     <div class="etapa1-inner" id="etapa1-inner">
          <div class="card-block accordion-block color-accordion-block">
              <div id="accordion" role="tablist" aria-multiselectable="true">
                  <div class="accordion-panel">
@@ -279,8 +279,8 @@
                                          <button
                                              id="btnGerarZip"
                                              class="btn btn-outline-success d-flex align-items-center gap-2"
-                                             data-bs-toggle="tooltip"
-                                             data-bs-placement="left"
+                                             data-toggle="tooltip"
+                                             data-placement="left"
                                              title="Gerar um arquivo ZIP com todos os documentos">
                                              <i class="fa fa-file-archive-o fa-lg"></i>
                                              <span>Gerar ZIP (documentos)</span>

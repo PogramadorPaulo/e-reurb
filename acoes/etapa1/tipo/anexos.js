@@ -32,12 +32,26 @@ $('#search_query').on('input', function () {
 
 
 
-// Carregar anexos assim que a página é inicializada
-$(document).ready(function () {
-    const id = $('#idProcedimento').val();
-
-    carregarAnexos(1, id); // Carrega a primeira página dos anexos
-});
+// Carregar anexos na primeira abertura da etapa 1 (id da aba = data-etapa-id do painel)
+(function () {
+    function loadAnexosEtapa1() {
+        const id = $('#idProcedimento').val();
+        carregarAnexos(1, id);
+    }
+    var etapaId = '1';
+    var inner = document.getElementById('etapa1-inner');
+    if (inner) {
+        var pane = inner.closest('.etapa-tab-pane');
+        if (pane && pane.getAttribute('data-etapa-id')) {
+            etapaId = String(pane.getAttribute('data-etapa-id'));
+        }
+    }
+    if (window.EtapasTabs) {
+        EtapasTabs.registerInit(etapaId, loadAnexosEtapa1);
+    } else {
+        $(document).ready(loadAnexosEtapa1);
+    }
+})();
 
 // Arrasta e solta o arquivo de upload // 
 document.addEventListener('DOMContentLoaded', function () {

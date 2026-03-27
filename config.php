@@ -82,6 +82,8 @@ try {
 	exit;
 }
 
+require_once __DIR__ . '/acoes/libs/json_response.php';
+
 /* Permissões de usuário */
 function hasPermission($userId, $permissionSlug, $db)
 {
@@ -92,9 +94,9 @@ function hasPermission($userId, $permissionSlug, $db)
 	$stmtAdmin->execute();
 	$user = $stmtAdmin->fetch(PDO::FETCH_ASSOC);
 
-	/*if ($user && $user['admin'] == 1) {
-    return true; // Administrador tem todas as permissões
-  }*/
+	if ($user && (int) $user['admin'] === 1) {
+		return true;
+	}
 
 	// Verifica permissões do grupo vinculado ao usuário
 	$query = "

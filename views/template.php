@@ -34,9 +34,12 @@
 
   <!-- Inclua os arquivos CSS do SweetAlert2 -->
   <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>assets/tema/css/sweetalert2.min.css">
+  <!-- Modais acima do header/sidebar/loader do tema (z-index) -->
+  <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>assets/tema/css/modal-zfix.css">
   <script type="text/javascript" src="<?php echo BASE_URL ?>assets/tema/js/tinymce/tinymce.min.js"></script>
   <!-- Required Jquery -->
   <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/tema/js/jquery/jquery.min.js"></script>
+  <script src="<?php echo BASE_URL; ?>assets/js/processos/json-response.js"></script>
   <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/tema/js/jquery-ui/jquery-ui.min.js "></script>
   <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/tema/js/popper.js/popper.min.js"></script>
 

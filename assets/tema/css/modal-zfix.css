@@ -1,0 +1,41 @@
+/**
+ * Modais Bootstrap 4 acima do header/sidebar (~1029) e do #loader em style.css (~1301).
+ * Valores muito altos (ex.: 10000+) podem gerar camadas GPU e aparência "borrada".
+ *
+ * Mantém faixa ~1310–1330: acima do loader, sem estourar empilhamento de plugins.
+ */
+.modal-backdrop {
+    z-index: 1310 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    filter: none !important;
+}
+
+.modal {
+    z-index: 1320 !important;
+    isolation: isolate;
+}
+
+.modal-content {
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: auto;
+}
+
+body.modal-open #pcoded,
+body.modal-open .pcoded-main-container {
+    filter: none !important;
+    -webkit-filter: none !important;
+}
+
+/* Select2 / menus ficam em ~1051; com modal >1300 precisam subir junto */
+body.modal-open .select2-container--open {
+    z-index: 1330 !important;
+}
+
+body.modal-open .bootstrap-select.open > .dropdown-menu {
+    z-index: 1330 !important;
+}
+
+body.modal-open #ui-datepicker-div {
+    z-index: 1330 !important;
+}

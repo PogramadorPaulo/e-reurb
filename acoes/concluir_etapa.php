@@ -9,25 +9,23 @@ $etapa = filter_input(INPUT_POST, "etapa", FILTER_SANITIZE_NUMBER_INT);
 $justificativa = filter_input(INPUT_POST, "justificativa", FILTER_SANITIZE_SPECIAL_CHARS);
 
 if (!hasPermission($id_user, 'processo_concluirEtapa', $db)) {
-    echo json_encode([
+    json_response_send([
         'status' => 'error',
-        'tittle' => 'Erro',
+        'title' => 'Erro',
         'message' => 'Você não tem permissão para realizar esta ação.',
         'icon' => 'error'
     ]);
-    exit;
 }
 
 
 // Validação dos dados
 if (!is_numeric($id_procedimento) || !is_numeric($id_user) || !is_numeric($id_municipio) || !is_numeric($etapa)) {
-    echo json_encode([
+    json_response_send([
         'status' => 'error',
-        'tittle' => 'Erro',
+        'title' => 'Erro',
         'message' => 'Dados inválidos fornecidos.',
         'icon' => 'error'
     ]);
-    exit;
 }
 
 try {
@@ -43,13 +41,12 @@ try {
     $etapaStatus = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($etapaStatus && $etapaStatus['procedimento_status'] == 4) {
-        echo json_encode([
+        json_response_send([
             'status' => 'warning',
-            'tittle' => 'Atenção',
+            'title' => 'Atenção',
             'message' => 'Esta etapa já está concluída.',
             'icon' => 'warning'
         ]);
-        exit;
     }
 
     // Atualizar o status da etapa
@@ -63,13 +60,12 @@ try {
     $update->execute();
 
     if ($update->rowCount() === 0) {
-        echo json_encode([
+        json_response_send([
             'status' => 'error',
-            'tittle' => 'Erro',
+            'title' => 'Erro',
             'message' => 'Falha ao atualizar o status da etapa.',
             'icon' => 'error'
         ]);
-        exit;
     }
     // Buscar dados do processo na tabela `procedures`
     $processQuery = $db->prepare("
@@ -82,13 +78,12 @@ try {
     $processData = $processQuery->fetch(PDO::FETCH_ASSOC);
 
     if (!$processData) {
-        echo json_encode([
+        json_response_send([
             'status' => 'error',
-            'tittle' => 'Erro',
+            'title' => 'Erro',
             'message' => 'Processo não encontrado.',
             'icon' => 'error'
         ]);
-        exit;
     }
 
     $numero_procedimento = $processData['numero_procedimento'];
@@ -211,16 +206,16 @@ try {
         }
     }
 
-    echo json_encode([
+    json_response_send([
         'status' => 'success',
-        'tittle' => 'Sucesso',
+        'title' => 'Sucesso',
         'message' => "{$etapaName}",
         'icon' => 'success'
     ]);
 } catch (Exception $e) {
-    echo json_encode([
+    json_response_send([
         'status' => 'error',
-        'tittle' => 'Erro',
+        'title' => 'Erro',
         'message' => 'Erro ao concluir a etapa: ' . $e->getMessage(),
         'icon' => 'error'
     ]);

@@ -845,6 +845,224 @@ iframe {
     color: #1061b3;
 }
 
+/* ---------- Etapas do processo (abas) ---------- */
+.etapas-tabs-card {
+    border: 1px solid rgba(3, 153, 159, 0.15);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
 
+.etapas-tabs-header {
+    display: flex;
+    align-items: center;
+    padding: 0.65rem 1rem;
+    background: linear-gradient(135deg, rgba(3, 153, 159, 0.08) 0%, rgba(3, 153, 159, 0.02) 100%);
+    border-bottom: 1px solid rgba(3, 153, 159, 0.12);
+}
+
+.etapas-tabs-header-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #03999f;
+}
+
+.etapas-tabs-card .etapas-tabs-scroll-wrap {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding: 0.5rem 0.25rem 0.25rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(3, 153, 159, 0.45) transparent;
+}
+
+.etapas-tabs-card .etapas-tabs-scroll-wrap::-webkit-scrollbar {
+    height: 6px;
+}
+
+.etapas-tabs-card .etapas-tabs-scroll-wrap::-webkit-scrollbar-thumb {
+    background: rgba(3, 153, 159, 0.35);
+    border-radius: 3px;
+}
+
+.etapas-tabs-scroll {
+    flex-wrap: nowrap;
+    align-items: stretch;
+    min-height: 0;
+    border-bottom: none;
+}
+
+.etapas-tabs-scroll .etapas-tabs-item {
+    flex-shrink: 0;
+}
+
+.etapas-tabs-scroll .etapas-tab-link {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 0.5rem;
+    min-width: 10.5rem;
+    max-width: 15rem;
+    min-height: 5.75rem;
+    padding: 0.65rem 0.85rem;
+    margin: 0 0.2rem;
+    border: 1px solid #e8ecef;
+    border-radius: 8px 8px 0 0;
+    background: #fafbfc;
+    line-height: 1.25;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.etapas-tabs-scroll .etapas-tab-link:hover:not(.disabled) {
+    background: #fff;
+    border-color: rgba(3, 153, 159, 0.35);
+    box-shadow: 0 2px 8px rgba(3, 153, 159, 0.08);
+}
+
+.etapas-tabs-scroll .etapas-tab-link.active:not(.disabled) {
+    background: #fff;
+    border-color: #03999f;
+    border-bottom-color: #fff;
+    box-shadow: 0 -2px 0 #03999f inset;
+    z-index: 1;
+}
+
+.etapas-tabs-scroll .etapas-tab-link.disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    background: #f4f5f6;
+}
+
+.etapa-tab-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    flex: 1;
+    min-height: 0;
+}
+
+.etapas-tabs-scroll .etapa-tab-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.25;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.etapas-tabs-scroll .etapas-tab-link.active:not(.disabled) .etapa-tab-title {
+    color: #0b6e73;
+}
+
+.etapas-tabs-scroll .etapa-tab-desc {
+    font-size: 0.68rem;
+    font-weight: 400;
+    color: #64748b;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+}
+
+.etapa-tab-status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: auto;
+    padding-top: 0.15rem;
+}
+
+.etapas-tabs-scroll .badge-etapa {
+    font-size: 0.62rem;
+    font-weight: 600;
+    padding: 0.28em 0.5em;
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+}
+
+.etapas-tabs-scroll .badge-etapa i {
+    margin-right: 0.15em;
+}
+
+/* Tema .md-tabs (style.css): neutraliza conflitos com este bloco */
+.etapas-tabs-card .md-tabs .nav-item {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    text-align: left;
+}
+
+.etapas-tabs-card .md-tabs .nav-item a.etapas-tab-link {
+    padding: 0.65rem 0.85rem !important;
+}
+
+.etapas-tabs-card .md-tabs .nav-link.etapas-tab-link:focus,
+.etapas-tabs-card .md-tabs .nav-link.etapas-tab-link:hover {
+    border-style: solid;
+}
+
+.etapas-tabs-card .md-tabs .nav-link.etapas-tab-link.active,
+.etapas-tabs-card .md-tabs .nav-link.etapas-tab-link.active:focus,
+.etapas-tabs-card .md-tabs .nav-link.etapas-tab-link.active:hover {
+    color: inherit;
+    background-color: #fff;
+    border-radius: 8px 8px 0 0;
+}
+
+.etapas-tabs-card .md-tabs .nav-item .slide {
+    display: none;
+}
+
+.etapa-tab-pane {
+    position: relative;
+    min-height: 120px;
+}
+
+/* Garante visibilidade após transição BS4 (evita fade preso sem opacidade) */
+.etapa-tab-pane.tab-pane.fade.active.show {
+    opacity: 1;
+}
+
+.etapa-tab-loader {
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.88);
+}
+
+.etapa-tab-loader.is-visible {
+    display: flex;
+}
+
+.etapa-tab-loader-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.etapa-tab-loader-text {
+    font-size: 0.9rem;
+    color: #495057;
+}
+
+.etapa-tab-body {
+    position: relative;
+    z-index: 1;
+}
 
 

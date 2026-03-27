@@ -1,62 +1,4 @@
 
-/* Tabs */
-$(document).ready(function () {
-    const params = new URLSearchParams(window.location.search);
-    const mainTab = params.get('tab'); // Obtém o parâmetro da URL
-    // Mapeamento das etapas para as suas abas
-    const tabMapping = {
-        '1': 'etapa_1',
-        '2': 'etapa_2',
-        '3': 'etapa_3',
-        '4': 'etapa_4',
-        '5': 'etapa_5',
-        '6': 'etapa_6',
-        '7': 'etapa_7'
-    };
-
-    // Exibir a aba correta ao carregar a página
-    if (mainTab && tabMapping[mainTab]) {
-        $(`#etapasTabs a[href="#${tabMapping[mainTab]}"]`).tab('show');
-    } else {
-        // Se nenhum parâmetro ou inválido, mostra a primeira aba
-        $('#etapasTabs a[href="#etapa_1"]').tab('show');
-    }
-
-    // Atualizar a URL ao clicar nas abas principais
-    $('#etapasTabs a').on('click', function (e) {
-        const tabId = $(this).attr('href').replace('#', '');
-
-        if ($(this).hasClass('disabled')) {
-            e.preventDefault();
-            Swal.fire('Etapa Bloqueada', 'Aguardando concluir etapa anterior', 'warning');
-            return;
-        }
-
-        const tabNumber = Object.keys(tabMapping).find(key => tabMapping[key] === tabId);
-        const newUrl = `${window.location.pathname}?tab=${tabNumber}`;
-
-        $('.tab-pane').removeClass('show active');
-        $(`#${tabId}`).addClass('show active');
-
-        // ✅ Carregar modelos apenas se for a aba 5
-        if (tabNumber === '5') {
-            carregarModelosEtapa5();
-        }
-
-        window.history.pushState({ tab: tabId }, '', newUrl);
-    });
-
-
-    // Lidar com o estado do botão "voltar" do navegador
-    window.addEventListener('popstate', function (event) {
-        const tab = event.state ? event.state.tab : null;
-        if (tab && $(`#etapasTabs a[href="#${tab}"]`).length) {
-            $(`#etapasTabs a[href="#${tab}"]`).tab('show');
-        }
-    });
-
-});
-
 /*  status do processo */
 $(document).ready(function () {
     const procedimentoId = $('#id').val(); // Captura o ID do procedimento
@@ -79,12 +21,17 @@ $(document).ready(function () {
     function handleResponse(response) {
         closeLoader();
         Swal.fire({
-            title: response.tittle,
+            title: jsonResponseTitle(response),
             html: response.message,
             icon: response.icon
         }).then(() => {
             if (response.status === 'success') {
-                location.reload();
+                if (window.EtapasTabs && typeof EtapasTabs.reloadPreservingTab === 'function') {
+                    EtapasTabs.reloadPreservingTab();
+                } else {
+                    var t = new URLSearchParams(window.location.search).get('tab') || '1';
+                    window.location.href = window.location.pathname + '?tab=' + encodeURIComponent(t);
+                }
             }
         });
     }
@@ -261,7 +208,7 @@ $(document).ready(function () {
                 } else {
                     $('#content').css("opacity", "");
                     Swal.fire({
-                        title: response.tittle,
+                        title: jsonResponseTitle(response),
                         html: response.message,
                         icon: response.icon
                     });
@@ -273,5 +220,4 @@ $(document).ready(function () {
         });
     });
 });
-
 

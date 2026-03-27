@@ -10,25 +10,23 @@ $justificativa = filter_input(INPUT_POST, "justificativa", FILTER_SANITIZE_SPECI
 
 
 if (!hasPermission($id_user, 'processo_etapaAnalise', $db)) {
-    echo json_encode([
+    json_response_send([
         'status' => 'error',
-        'tittle' => 'Erro',
+        'title' => 'Erro',
         'message' => 'Você não tem permissão para realizar esta ação.',
         'icon' => 'error'
     ]);
-    exit;
 }
 
 
 // Validação dos dados
 if (!is_numeric($id_procedimento) || !is_numeric($id_user) || !is_numeric($id_municipio) || !is_numeric($etapa)) {
-    echo json_encode([
+    json_response_send([
         'status' => 'error',
-        'tittle' => 'Erro',
+        'title' => 'Erro',
         'message' => 'Dados inválidos fornecidos.',
         'icon' => 'error'
     ]);
-    exit;
 }
 
 
@@ -45,13 +43,12 @@ try {
     $etapaStatus = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($etapaStatus && $etapaStatus['procedimento_status'] == 5) {
-        echo json_encode([
+        json_response_send([
             'status' => 'warning',
-            'tittle' => 'Atenção',
+            'title' => 'Atenção',
             'message' => 'Esta etapa já está marcada como "Em Análise".',
             'icon' => 'warning'
         ]);
-        exit;
     }
 
     // Atualizar o status da etapa para "Em Análise"
@@ -75,13 +72,12 @@ try {
     $processData = $processQuery->fetch(PDO::FETCH_ASSOC);
 
     if (!$processData) {
-        echo json_encode([
+        json_response_send([
             'status' => 'error',
-            'tittle' => 'Erro',
+            'title' => 'Erro',
             'message' => 'Processo não encontrado.',
             'icon' => 'error'
         ]);
-        exit;
     }
 
     $numero_procedimento = $processData['numero_procedimento'];
@@ -215,16 +211,16 @@ try {
     }
 
 
-    echo json_encode([
+    json_response_send([
         'status' => 'success',
-        'tittle' => 'Sucesso',
+        'title' => 'Sucesso',
         'message' => "{$etapaName}",
         'icon' => 'success'
     ]);
 } catch (Exception $e) {
-    echo json_encode([
+    json_response_send([
         'status' => 'error',
-        'tittle' => 'Erro',
+        'title' => 'Erro',
         'message' => 'Erro ao marcar a etapa como "Em Análise": ' . $e->getMessage(),
         'icon' => 'error'
     ]);

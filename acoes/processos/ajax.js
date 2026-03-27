@@ -123,7 +123,7 @@ $(document).on('click', '.cancelarProcedimento', function () {
                 success: function (response) {
                     Swal.close();
                     Swal.fire({
-                        title: response.tittle,
+                        title: jsonResponseTitle(response),
                         html: response.message,
                         icon: response.icon
                     }).then(() => {
@@ -166,7 +166,7 @@ $(document).on('click', '.ativarProcedimento', function () {
                 data: { id_procedimento: procedimentoId },
                 success: function (response) {
                     Swal.fire({
-                        title: response.tittle,
+                        title: jsonResponseTitle(response),
                         html: response.message,
                         icon: response.icon
                     }).then(() => {
@@ -229,7 +229,7 @@ $(document).ready(function () {
                     data: data,
                     success: function (response) {
                         Swal.fire({
-                            title: response.tittle,
+                            title: jsonResponseTitle(response),
                             html: response.message,
                             icon: response.icon
                         }).then(() => {

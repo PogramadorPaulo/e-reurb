@@ -6,13 +6,12 @@ $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
 // Verificar se a etapa está concluída
 if (isEtapaConcluida($dados['idProcedimento'], 1, $db)) {
-    echo json_encode([
+    json_response_send([
         'status' => 'error',
-        'tittle' => 'Etapa Concluída',
+        'title' => 'Etapa Concluída',
         'message' => 'Não é possível salvar ou editar. A etapa já está concluída.',
         'icon' => 'warning'
     ]);
-    exit;
 }
 
 // Buscar o número atual do procedimento
@@ -87,19 +86,17 @@ if ($sql->rowCount() > 0) {
     $atividade->bindValue(":atividade_name", 'Processo atualizado - Aba Tipo: ' . $dados_array);
     $atividade->execute();
 
-    $response = array(
+    json_response_send([
         'status' => 'success',
         'title' => 'Sucesso',
         'message' => 'Atualização efetuada com sucesso.',
         'icon' => 'success',
-    );
-    echo json_encode($response);
+    ]);
 } else {
-    $response = array(
+    json_response_send([
         'status' => 'info',
         'title' => 'Sucesso',
         'message' => 'Não houve nenhuma alteração nos dados para salvar',
         'icon' => 'info',
-    );
-    echo json_encode($response);
+    ]);
 }

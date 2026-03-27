@@ -544,8 +544,8 @@
                                     <button
                                         id="btnGerarZipEtapa2"
                                         class="btn btn-outline-success d-flex align-items-center gap-2"
-                                        data-bs-toggle="tooltip"
-                                        data-bs-placement="left"
+                                        data-toggle="tooltip"
+                                        data-placement="left"
                                         title="Gerar um arquivo ZIP com todos os documentos">
                                         <i class="fa fa-file-archive-o fa-lg"></i>
                                         <span>Gerar ZIP (documentos)</span>

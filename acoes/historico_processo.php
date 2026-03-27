@@ -5,13 +5,12 @@ require_once '../config.php';
 $id_procedimento = filter_input(INPUT_POST, 'id_procedimento', FILTER_SANITIZE_NUMBER_INT);
 
 if (!$id_procedimento) {
-    echo json_encode([
+    json_response_send([
         'status' => 'error',
-        'tittle' => 'Erro',
+        'title' => 'Erro',
         'message' => 'ID do processo inválido.',
         'icon' => 'error'
     ]);
-    exit;
 }
 
 try {
@@ -69,9 +68,9 @@ try {
         'data' => $historico
     ]);
 } catch (Exception $e) {
-    echo json_encode([
+    json_response_send([
         'status' => 'error',
-        'tittle' => 'Erro',
+        'title' => 'Erro',
         'message' => 'Erro ao buscar histórico: ' . $e->getMessage(),
         'icon' => 'error'
     ]);
