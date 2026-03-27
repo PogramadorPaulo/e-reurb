@@ -3,11 +3,11 @@
      <input type="hidden" name="idMunicipio" id="idMunicipio" value="<?php echo $idMunicipio; ?>">
      <div class="etapa1-inner" id="etapa1-inner">
          <div class="card-block accordion-block color-accordion-block">
-             <div id="accordion" role="tablist" aria-multiselectable="true">
+             <div id="accordion_etapa1" role="tablist" aria-multiselectable="true">
                  <div class="accordion-panel">
                      <div class="accordion-heading" role="tab" id="headingTipo">
                          <h3 class="card-title accordion-title">
-                             <a class="accordion-msg waves-effect waves-dark scale_active" data-toggle="collapse" data-parent="#accordion" href="#collapseTipo" aria-expanded="true" aria-controls="collapseTipo">
+                             <a class="accordion-msg waves-effect waves-dark scale_active" data-toggle="collapse" data-parent="#accordion_etapa1" href="#collapseTipo" aria-expanded="true" aria-controls="collapseTipo">
                                  Tipo
                              </a>
                          </h3>
@@ -149,7 +149,7 @@
                  <div class="accordion-panel">
                      <div class="accordion-heading" role="tab" id="headingRequerentes">
                          <h3 class="card-title accordion-title">
-                             <a class="accordion-msg waves-effect waves-dark scale_active" data-toggle="collapse" data-parent="#accordion" href="#collapseRequerentes" aria-expanded="true" aria-controls="collapseRequerentes">
+                             <a class="accordion-msg waves-effect waves-dark scale_active" data-toggle="collapse" data-parent="#accordion_etapa1" href="#collapseRequerentes" aria-expanded="true" aria-controls="collapseRequerentes">
                                  Requerente(s)
                              </a>
                          </h3>
@@ -222,7 +222,7 @@
                  <div class="accordion-panel">
                      <div class="accordion-heading" role="tab" id="headingDocumentosEtapa1">
                          <h3 class="card-title accordion-title">
-                             <a class="accordion-msg waves-effect waves-dark scale_active" data-toggle="collapse" data-parent="#accordion" href="#collapseDocumentosEtapa1" aria-expanded="true" aria-controls="collapseDocumentosEtapa1">
+                             <a class="accordion-msg waves-effect waves-dark scale_active" data-toggle="collapse" data-parent="#accordion_etapa1" href="#collapseDocumentosEtapa1" aria-expanded="true" aria-controls="collapseDocumentosEtapa1">
                                  Documentos
                              </a>
                          </h3>

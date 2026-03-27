@@ -24,7 +24,7 @@ if (isset($_POST["id"])) {
 							<br>
 							Enviar arquivo
 							</label>
-							<input type="file" id="arquivo_anexo_proprietario" class="customFile" accept=".jpeg, .jpg, .pdf, .png, .rar, .zip, .xlxs, .docx, .bmp" required />
+							<input type="file" id="arquivo_anexo_proprietario" class="customFile" accept=".jpeg,.jpg,.pdf,.png,.rar,.zip,.xlsx,.docx,.bmp" required />
 							<div id="fileInfoAnexo"></div>
 					  </div>
 				    </div>

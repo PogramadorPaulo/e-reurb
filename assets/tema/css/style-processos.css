@@ -1065,4 +1065,9 @@ iframe {
     z-index: 1;
 }
 
+/* Bloco interno da etapa (não usar .tab-pane aqui — conflita com as abas Bootstrap #etapa_X) */
+.etapa-inner {
+    display: block;
+}
+
 

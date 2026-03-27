@@ -4,7 +4,6 @@ header('Content-Type: application/json; charset=utf-8');
 
 if (isset($_FILES['arquivo'])) {
 	require_once('../../../config.php');
-	require_once '../../libs/validar_pdf_fpdi.php';
 
 	$idProcedimento = filter_input(INPUT_POST, "idProcesso", FILTER_SANITIZE_SPECIAL_CHARS);
 	$id = filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
@@ -36,10 +35,11 @@ if (isset($_FILES['arquivo'])) {
 	$tamanho_arquivo = $_FILES['arquivo']['size'];
 	$arquivo_tmp = $_FILES['arquivo']['tmp_name'];
 
-	$permitidos = [".pdf"];
-	$ext = strtolower(strrchr($nome_arquivo, "."));
+	$permitidos = ['.pdf', '.docx', '.xlsx', '.jpeg', '.jpg', '.png', '.bmp', '.zip', '.rar'];
+	$dot = strrchr($nome_arquivo, '.');
+	$ext = $dot ? strtolower($dot) : '';
 
-	if (!in_array($ext, $permitidos)) {
+	if ($ext === '' || !in_array($ext, $permitidos, true)) {
 		echo json_encode([
 			'status' => 'error',
 			'title' => 'Erro',
@@ -47,19 +47,6 @@ if (isset($_FILES['arquivo'])) {
 			'icon' => 'error',
 		]);
 		exit;
-	}
-
-	if ($ext === ".pdf") {
-		$validacao = validarPdfParaUpload($arquivo_tmp);
-		if (!$validacao['ok']) {
-			echo json_encode([
-				'status' => 'error',
-				'title' => 'Erro no PDF',
-				'message' => $validacao['mensagem'],
-				'icon' => 'error',
-			]);
-			exit;
-		}
 	}
 
 	if ($tamanho_arquivo > (1024 * 1024 * TAMANHO_UPLOAD)) {

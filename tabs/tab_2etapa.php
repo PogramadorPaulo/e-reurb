@@ -1,13 +1,13 @@
 <?php if ($viewData['user']->hasPermission('processo_2etapa')) : ?>
     <input type="hidden" name="idProcedimento" id="idProcedimento" value="<?php echo $id; ?>">
     <input type="hidden" name="idMunicipio" id="idMunicipio" value="<?php echo $idMunicipio; ?>">
-    <div class="tab-pane" id="2etapa" aria-labelledby="2etapa-tab">
+    <div class="etapa-inner" id="2etapa" aria-labelledby="2etapa-tab">
         <div class="card-block accordion-block color-accordion-block">
             <div id="accordion" role="tablist" aria-multiselectable="true">
                 <div class="accordion-panel">
                     <div class=" accordion-heading" role="tab" id="headerProprietariosMatriculas">
                         <h3 class="card-title accordion-title">
-                            <a class="accordion-msg waves-effect waves-dark scale_active collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseProprietariosMatriculas" aria-expanded="false" aria-controls="collapseProprietariosMatriculas">
+                            <a class="accordion-msg waves-effect waves-dark scale_active collapsed" data-toggle="collapse" data-parent="#accordion_etapa2" href="#collapseProprietariosMatriculas" aria-expanded="false" aria-controls="collapseProprietariosMatriculas">
                                 Proprietários da Matrícula
                             </a>
                         </h3>
@@ -35,7 +35,7 @@
                 <div class="accordion-panel">
                     <div class=" accordion-heading" role="tab" id="headerMatriculas">
                         <h3 class="card-title accordion-title">
-                            <a class="accordion-msg waves-effect waves-dark scale_active collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseMatriculas" aria-expanded="false" aria-controls="collapseMatriculas">
+                            <a class="accordion-msg waves-effect waves-dark scale_active collapsed" data-toggle="collapse" data-parent="#accordion_etapa2" href="#collapseMatriculas" aria-expanded="false" aria-controls="collapseMatriculas">
                                 Matrículas
                             </a>
                         </h3>
@@ -58,7 +58,7 @@
                 <div class="accordion-panel">
                     <div class=" accordion-heading" role="tab" id="headerConfrontantes">
                         <h3 class="card-title accordion-title">
-                            <a class="accordion-msg waves-effect waves-dark scale_active collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseConfrontante" aria-expanded="false" aria-controls="collapseConfrontante">
+                            <a class="accordion-msg waves-effect waves-dark scale_active collapsed" data-toggle="collapse" data-parent="#accordion_etapa2" href="#collapseConfrontante" aria-expanded="false" aria-controls="collapseConfrontante">
                                 Confrontantes
                             </a>
                         </h3>
@@ -86,7 +86,7 @@
                 <div class="accordion-panel">
                     <div class="accordion-heading" role="tab" id="headingOne">
                         <h3 class="card-title accordion-title">
-                            <a class="accordion-msg waves-effect waves-dark scale_active" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <a class="accordion-msg waves-effect waves-dark scale_active" data-toggle="collapse" data-parent="#accordion_etapa2" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                 Descrição do núcleo
                             </a>
                         </h3>
@@ -489,7 +489,7 @@
                 <div class="accordion-panel">
                     <div class=" accordion-heading" role="tab" id="headerDocumentosEtapa2">
                         <h3 class="card-title accordion-title">
-                            <a class="accordion-msg waves-effect waves-dark scale_active collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseDocumentosEtapa2" aria-expanded="false" aria-controls="collapseDocumentosEtapa2">
+                            <a class="accordion-msg waves-effect waves-dark scale_active collapsed" data-toggle="collapse" data-parent="#accordion_etapa2" href="#collapseDocumentosEtapa2" aria-expanded="false" aria-controls="collapseDocumentosEtapa2">
                                 Documentos
                             </a>
                         </h3>

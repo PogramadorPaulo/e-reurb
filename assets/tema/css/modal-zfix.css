@@ -39,3 +39,8 @@ body.modal-open .bootstrap-select.open > .dropdown-menu {
 body.modal-open #ui-datepicker-div {
     z-index: 1330 !important;
 }
+
+/* SweetAlert2 acima de modais Bootstrap (~1320) */
+.swal2-container {
+    z-index: 1350 !important;
+}

@@ -104,6 +104,11 @@
 			}
 		});
 
+		// Ao sair de uma etapa, fecha modais abertas (evita backdrop/conteúdo da etapa anterior sobreposto).
+		$tabs.on('hide.bs.tab', 'a[data-toggle="tab"]', function () {
+			$('.modal.show').modal('hide');
+		});
+
 		// Usar $(this) e não $(e.target): cliques nos spans internos do <a> deixam target sem href/data-tab-num.
 		$tabs.on('shown.bs.tab', 'a[data-toggle="tab"]', function () {
 			var $target = $(this);
@@ -118,6 +123,13 @@
 			var $pane = $(href);
 			syncUrl(tabNum);
 			runInitOnce(tabNum, $pane);
+
+			setTimeout(function () {
+				if (!$('.modal.show').length && $('.modal-backdrop').length) {
+					$('.modal-backdrop').remove();
+					$('body').removeClass('modal-open').css('padding-right', '');
+				}
+			}, 400);
 		});
 
 		window.addEventListener('popstate', function () {

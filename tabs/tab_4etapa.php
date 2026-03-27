@@ -1,7 +1,7 @@
 <?php if ($viewData['user']->hasPermission('processo_4etapa')) : ?>
     <input type="hidden" name="idProcedimento" id="idProcedimento" value="<?php echo $id; ?>">
     <input type="hidden" name="idMunicipio" id="idMunicipio" value="<?php echo $idMunicipio; ?>">
-    <div class="tab-pane" id="4etapa" aria-labelledby="4etapa-tab">
+    <div class="etapa-inner" id="4etapa" aria-labelledby="4etapa-tab">
 
         <h5 class="mb-4">Mapa de Quadras e Lotes</h5>
 
@@ -24,7 +24,7 @@
             <div class="accordion-panel">
                 <div class=" accordion-heading" role="tab" id="headerDocumentosEtapa4">
                     <h3 class="card-title accordion-title">
-                        <a class="accordion-msg waves-effect waves-dark scale_active collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseDocumentosEtapa4" aria-expanded="false" aria-controls="collapseDocumentosEtapa4">
+                        <a class="accordion-msg waves-effect waves-dark scale_active collapsed" data-toggle="collapse" data-parent="#accordion_etapa4" href="#collapseDocumentosEtapa4" aria-expanded="false" aria-controls="collapseDocumentosEtapa4">
                             Documentos
                         </a>
                     </h3>

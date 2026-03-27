@@ -1,11 +1,11 @@
 <?php if ($viewData['user']->hasPermission('processo_3etapa')) : ?>
-    <div class="tab-pane" id="3etapa" aria-labelledby="3etapa-tab">
+    <div class="etapa-inner" id="3etapa" aria-labelledby="3etapa-tab">
         <div class="card-block accordion-block color-accordion-block">
             <div id="accordion" role="tablist" aria-multiselectable="true">
                 <div class="accordion-panel">
                     <div class=" accordion-heading" role="tab" id="headerProprietarios">
                         <h3 class="card-title accordion-title">
-                            <a class="accordion-msg waves-effect waves-dark scale_active collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseProprietarios" aria-expanded="false" aria-controls="collapseProprietarios">
+                            <a class="accordion-msg waves-effect waves-dark scale_active collapsed" data-toggle="collapse" data-parent="#accordion_etapa3" href="#collapseProprietarios" aria-expanded="false" aria-controls="collapseProprietarios">
                                 Beneficiários
                             </a>
                         </h3>

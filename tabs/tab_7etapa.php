@@ -1,6 +1,6 @@
 <?php if ($viewData['user']->hasPermission('processo_7etapa')) : ?>
 
-    <div class="tab-pane" id="7etapa" aria-labelledby="7etapa-tab">
+    <div class="etapa-inner" id="7etapa" aria-labelledby="7etapa-tab">
         <input type="hidden" name="id" id="id" value="<?php echo $id; ?>">
         <input type="hidden" name="idUser" value="<?php echo $viewData['user']->getId(); ?>">
         <input type="hidden" name="idMunicipio" id="idMunicipio" value="<?= htmlspecialchars($idMunicipio, ENT_QUOTES, 'UTF-8') ?>">
