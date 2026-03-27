@@ -20,6 +20,7 @@
             </div>
 
         </div>
+        <div class="card-block accordion-block color-accordion-block">
         <div id="accordion_etapa4" role="tablist" aria-multiselectable="true">
             <div class="accordion-panel">
                 <div class=" accordion-heading" role="tab" id="headerDocumentosEtapa4">
@@ -91,6 +92,7 @@
 
                 </div>
             </div>
+        </div>
         </div>
 
         <div class="card-body">

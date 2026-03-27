@@ -1149,4 +1149,338 @@ iframe {
     display: block;
 }
 
+/* =============================================================================
+   Conteúdo das abas de processo (escopo: apenas dentro do card de etapas)
+   Tokens: teal #03999f, cantos ~8px, hierarquia clara
+   ============================================================================= */
+
+.etapas-tabs-card .etapa-tab-body {
+    padding: 1.25rem 1.25rem 1.5rem;
+    background: linear-gradient(180deg, #fafcfd 0%, #ffffff 12%);
+    border-radius: 0 0 6px 6px;
+}
+
+@media (min-width: 992px) {
+    .etapas-tabs-card .etapa-tab-body {
+        padding: 1.5rem 1.75rem 1.75rem;
+    }
+}
+
+/* Ritmo vertical entre blocos principais */
+.etapas-tabs-card .etapa-tab-body > .etapa1-inner,
+.etapas-tabs-card .etapa-tab-body > .etapa-inner,
+.etapas-tabs-card .etapa-tab-body > .etapa5-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.etapas-tabs-card .etapa-tab-body .card-block.accordion-block {
+    margin-bottom: 0;
+}
+
+/* Título de seção solto (ex.: etapa 4 — mapa) */
+.etapas-tabs-card .etapa-tab-body .etapa-inner > h5:first-of-type {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f766e;
+    letter-spacing: 0.02em;
+    margin-bottom: 1rem !important;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(3, 153, 159, 0.15);
+}
+
+/* Tipografia auxiliar */
+.etapas-tabs-card .etapa-tab-body .text-muted {
+    color: #64748b !important;
+}
+
+/* ---------- Fieldsets (substitui borda vermelha global neste contexto) ---------- */
+.etapas-tabs-card .etapa-tab-body fieldset {
+    border: 1px solid rgba(3, 153, 159, 0.22) !important;
+    border-radius: 8px !important;
+    background: #f8fafc !important;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    padding: 1rem 1.1rem 1.1rem !important;
+    margin-bottom: 1rem !important;
+}
+
+.etapas-tabs-card .etapa-tab-body fieldset legend {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #0f766e;
+    padding: 0 0.5rem;
+    margin-bottom: 0;
+    width: auto;
+    float: none;
+}
+
+.etapas-tabs-card .etapa-tab-body fieldset .form-group:last-child {
+    margin-bottom: 0;
+}
+
+/* ---------- Rádios customizados (refino no escopo das abas) ---------- */
+.etapas-tabs-card .etapa-tab-body .custom-radio-group {
+    gap: 0.65rem 0.85rem;
+}
+
+.etapas-tabs-card .etapa-tab-body .custom-radio .radio-btn {
+    border-radius: 8px;
+    border-color: rgba(3, 153, 159, 0.45);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.65rem 0.85rem;
+    transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.etapas-tabs-card .etapa-tab-body .custom-radio input:focus + .radio-btn {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(3, 153, 159, 0.28);
+}
+
+.etapas-tabs-card .etapa-tab-body .custom-radio input:focus-visible + .radio-btn {
+    outline: 2px solid #03999f;
+    outline-offset: 2px;
+    box-shadow: none;
+}
+
+.etapas-tabs-card .etapa-tab-body .custom-radio input:checked + .radio-btn {
+    box-shadow: 0 1px 3px rgba(3, 153, 159, 0.25);
+}
+
+/* ---------- Accordions: seções tipo “card stack” ---------- */
+.etapas-tabs-card .etapa-tab-body .accordion-block {
+    padding: 0;
+}
+
+.etapas-tabs-card .etapa-tab-body .accordion-panel {
+    margin-bottom: 0.85rem;
+    border: 1px solid rgba(3, 153, 159, 0.16);
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+    overflow: hidden;
+}
+
+.etapas-tabs-card .etapa-tab-body .accordion-panel:last-child {
+    margin-bottom: 0;
+}
+
+.etapas-tabs-card .etapa-tab-body .accordion-heading {
+    margin: 0;
+    background: linear-gradient(135deg, rgba(3, 153, 159, 0.07) 0%, rgba(248, 250, 252, 0.95) 100%);
+    border-bottom: 1px solid rgba(3, 153, 159, 0.1);
+}
+
+.etapas-tabs-card .etapa-tab-body .accordion-title {
+    margin-bottom: 0;
+    background: transparent;
+}
+
+.etapas-tabs-card .etapa-tab-body .accordion-title .accordion-msg {
+    position: relative;
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.9rem 1rem 0.9rem 1.1rem !important;
+    margin: 0;
+    border: none !important;
+    border-top: none !important;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: #1e293b !important;
+    text-decoration: none !important;
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.etapas-tabs-card .etapa-tab-body .accordion-title .accordion-msg:hover {
+    background: rgba(3, 153, 159, 0.06);
+    color: #026a70 !important;
+}
+
+.etapas-tabs-card .etapa-tab-body .accordion-title .accordion-msg:focus {
+    outline: none;
+}
+
+.etapas-tabs-card .etapa-tab-body .accordion-title .accordion-msg:focus-visible {
+    outline: 2px solid #03999f;
+    outline-offset: -2px;
+    z-index: 1;
+}
+
+/* Indicador expansível (BS4: .collapsed = painel fechado) */
+.etapas-tabs-card .etapa-tab-body .accordion-title .accordion-msg::after {
+    content: "";
+    flex-shrink: 0;
+    width: 0.45rem;
+    height: 0.45rem;
+    margin-left: 0.5rem;
+    border-right: 2px solid #64748b;
+    border-bottom: 2px solid #64748b;
+    transition: transform 0.2s ease, border-color 0.15s ease;
+}
+
+.etapas-tabs-card .etapa-tab-body .accordion-title .accordion-msg.collapsed::after {
+    transform: rotate(45deg);
+}
+
+.etapas-tabs-card .etapa-tab-body .accordion-title .accordion-msg:not(.collapsed)::after {
+    transform: rotate(-135deg);
+    border-color: #03999f;
+}
+
+.etapas-tabs-card .etapa-tab-body .panel-collapse {
+    border-top: 1px solid rgba(3, 153, 159, 0.08);
+    background: #fff;
+}
+
+.etapas-tabs-card .etapa-tab-body .accordion-content {
+    padding: 1rem 1.1rem 1.25rem !important;
+    border: none !important;
+    border-bottom: none !important;
+    background: #fff;
+}
+
+.etapas-tabs-card .etapa-tab-body .accordion-content > *:first-child {
+    margin-top: 0;
+}
+
+/* ---------- Cards Bootstrap (etapas 5, 7, etc.) ---------- */
+.etapas-tabs-card .etapa-tab-body .card {
+    border: 1px solid rgba(3, 153, 159, 0.14);
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.etapas-tabs-card .etapa-tab-body .card:last-child {
+    margin-bottom: 0;
+}
+
+.etapas-tabs-card .etapa-tab-body .card-header {
+    background: linear-gradient(135deg, rgba(3, 153, 159, 0.09) 0%, rgba(248, 250, 252, 0.98) 100%) !important;
+    border-bottom: 1px solid rgba(3, 153, 159, 0.12);
+    padding: 0.75rem 1rem;
+}
+
+.etapas-tabs-card .etapa-tab-body .card-header h6 {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #0f766e;
+    letter-spacing: 0.01em;
+}
+
+.etapas-tabs-card .etapa-tab-body .card-body {
+    padding: 1rem 1.1rem 1.15rem;
+}
+
+.etapas-tabs-card .etapa-tab-body .card-body > p:first-child {
+    margin-top: 0;
+}
+
+/* Bloco de ações da etapa (Concluir / Pendente / Análise) */
+.etapas-tabs-card .etapa-tab-body .etapa-inner > .card-body:has(.btn-concluir-etapa),
+.etapas-tabs-card .etapa-tab-body .etapa1-inner > .card-body:has(.btn-concluir-etapa),
+.etapas-tabs-card .etapa-tab-body .etapa5-inner > .card-body:has(.btn-concluir-etapa) {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 1rem;
+    margin-top: 0.5rem;
+    border-top: 1px dashed rgba(3, 153, 159, 0.2);
+    background: transparent;
+}
+
+/* ---------- Tabelas ---------- */
+.etapas-tabs-card .etapa-tab-body .table {
+    margin-bottom: 0;
+    font-size: 0.9rem;
+}
+
+.etapas-tabs-card .etapa-tab-body .table thead th {
+    background: rgba(3, 153, 159, 0.08);
+    color: #0f766e;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid rgba(3, 153, 159, 0.18);
+    padding: 0.65rem 0.75rem;
+    vertical-align: middle;
+}
+
+.etapas-tabs-card .etapa-tab-body .table tbody tr:nth-child(even) {
+    background: rgba(248, 250, 252, 0.65);
+}
+
+.etapas-tabs-card .etapa-tab-body .table td {
+    padding: 0.6rem 0.75rem;
+    vertical-align: middle;
+    border-color: rgba(15, 23, 42, 0.06);
+}
+
+.etapas-tabs-card .etapa-tab-body .table-bordered {
+    border: 1px solid rgba(3, 153, 159, 0.12);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+/* ---------- Dropzone / upload ---------- */
+.etapas-tabs-card .etapa-tab-body .dropzone.dotted-border {
+    border: 2px dashed rgba(3, 153, 159, 0.35) !important;
+    border-radius: 8px !important;
+    background: linear-gradient(180deg, rgba(3, 153, 159, 0.04) 0%, #fff 55%) !important;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.etapas-tabs-card .etapa-tab-body .dropzone.dotted-border:hover,
+.etapas-tabs-card .etapa-tab-body .dropzone.dotted-border:focus-within {
+    border-color: rgba(3, 153, 159, 0.55) !important;
+    background: rgba(3, 153, 159, 0.06) !important;
+}
+
+/* ---------- Formulários ---------- */
+.etapas-tabs-card .etapa-tab-body .form-control:focus {
+    border-color: rgba(3, 153, 159, 0.55);
+    box-shadow: 0 0 0 0.2rem rgba(3, 153, 159, 0.18);
+}
+
+.etapas-tabs-card .etapa-tab-body label {
+    font-weight: 500;
+    color: #334155;
+    font-size: 0.9rem;
+}
+
+.etapas-tabs-card .etapa-tab-body .btn-outline-primary {
+    border-color: rgba(3, 153, 159, 0.45);
+    color: #026a70;
+}
+
+.etapas-tabs-card .etapa-tab-body .btn-outline-primary:hover {
+    background: #03999f;
+    border-color: #03999f;
+    color: #fff;
+}
+
+/* ---------- Documentos / anexos (cards existentes) ---------- */
+.etapas-tabs-card .etapa-tab-body .cardDocumento {
+    border-radius: 6px;
+    border-color: rgba(3, 153, 159, 0.2);
+}
+
+@media (max-width: 575.98px) {
+    .etapas-tabs-card .etapa-tab-body {
+        padding: 1rem 0.9rem 1.25rem;
+    }
+
+    .etapas-tabs-card .etapa-tab-body .custom-radio {
+        flex: 1 1 100%;
+    }
+}
 
