@@ -206,11 +206,31 @@ try {
         }
     }
 
+    $nextEtapaId = null;
+    $ordStmt = $db->prepare("
+        SELECT ep.etapa_id
+        FROM etapas_procedimentos ep
+        INNER JOIN etapas_processo eproc ON eproc.etapa_processo_id = ep.etapa_id
+        WHERE ep.processo_id = :pid
+        ORDER BY eproc.etapa_ordem ASC
+    ");
+    $ordStmt->bindValue(':pid', (string) $id_procedimento, PDO::PARAM_STR);
+    $ordStmt->execute();
+    $ordemEtapas = $ordStmt->fetchAll(PDO::FETCH_COLUMN);
+    $etapaAtual = (int) $etapa;
+    for ($i = 0; $i < count($ordemEtapas); $i++) {
+        if ((int) $ordemEtapas[$i] === $etapaAtual && isset($ordemEtapas[$i + 1])) {
+            $nextEtapaId = (int) $ordemEtapas[$i + 1];
+            break;
+        }
+    }
+
     json_response_send([
         'status' => 'success',
         'title' => 'Sucesso',
         'message' => "{$etapaName}",
-        'icon' => 'success'
+        'icon' => 'success',
+        'next_etapa_id' => $nextEtapaId,
     ]);
 } catch (Exception $e) {
     json_response_send([

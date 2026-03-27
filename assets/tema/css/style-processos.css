@@ -907,27 +907,34 @@ iframe {
     min-width: 10.5rem;
     max-width: 15rem;
     min-height: 5.75rem;
+    /* Mesma espessura de borda e padding em todos os estados (evita “pulo” ao trocar aba) */
     padding: 0.65rem 0.85rem;
     margin: 0 0.2rem;
-    border: 1px solid #e8ecef;
+    border: 2px solid #d8dee4;
     border-radius: 8px 8px 0 0;
-    background: #fafbfc;
+    background-color: #e9ecef;
     line-height: 1.25;
-    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
 }
 
-.etapas-tabs-scroll .etapas-tab-link:hover:not(.disabled) {
-    background: #fff;
-    border-color: rgba(3, 153, 159, 0.35);
-    box-shadow: 0 2px 8px rgba(3, 153, 159, 0.08);
+/* Abas disponíveis: sem mudança de opacidade no hover (evita “pulo” ao mover o mouse) */
+.etapas-tabs-scroll .etapas-tab-link:not(.active):not(.disabled) {
+    opacity: 1;
 }
 
+/* Aba ativa: fundo em degradê + borda externa (sem faixa interna nem barra à esquerda) */
 .etapas-tabs-scroll .etapas-tab-link.active:not(.disabled) {
-    background: #fff;
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(
+        180deg,
+        rgba(3, 153, 159, 0.22) 0%,
+        rgba(3, 153, 159, 0.09) 48%,
+        #ffffff 100%
+    );
     border-color: #03999f;
     border-bottom-color: #fff;
-    box-shadow: 0 -2px 0 #03999f inset;
-    z-index: 1;
+    box-shadow: none;
 }
 
 .etapas-tabs-scroll .etapas-tab-link.disabled {
@@ -946,8 +953,8 @@ iframe {
 
 .etapas-tabs-scroll .etapa-tab-title {
     font-size: 0.92rem;
-    font-weight: 700;
-    color: #1e293b;
+    font-weight: 600;
+    color: #475569;
     line-height: 1.25;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -956,7 +963,9 @@ iframe {
 }
 
 .etapas-tabs-scroll .etapas-tab-link.active:not(.disabled) .etapa-tab-title {
-    color: #0b6e73;
+    font-weight: 800;
+    color: #026a70;
+    letter-spacing: -0.01em;
 }
 
 .etapas-tabs-scroll .etapa-tab-desc {
@@ -969,6 +978,10 @@ iframe {
     -webkit-box-orient: vertical;
     overflow: hidden;
     word-break: break-word;
+}
+
+.etapas-tabs-scroll .etapas-tab-link:not(.active):not(.disabled) .etapa-tab-desc {
+    color: #94a3b8;
 }
 
 .etapa-tab-status {
@@ -1001,25 +1014,85 @@ iframe {
     text-align: left;
 }
 
-.etapas-tabs-card .md-tabs .nav-item a.etapas-tab-link {
+/*
+ * Tema: .md-tabs .nav-item a { padding: 20px 0 !important } — no hover pode “voltar” e mudar o layout.
+ * Travamos padding e margin em todos os estados (incl. :hover).
+ */
+.etapas-tabs-card .md-tabs.etapas-tabs-scroll .nav-item a.etapas-tab-link,
+.etapas-tabs-card .md-tabs.etapas-tabs-scroll .nav-item a.etapas-tab-link:hover,
+.etapas-tabs-card .md-tabs.etapas-tabs-scroll .nav-item a.etapas-tab-link:focus,
+.etapas-tabs-card .md-tabs.etapas-tabs-scroll .nav-item a.etapas-tab-link:active,
+.etapas-tabs-card .md-tabs.etapas-tabs-scroll .nav-item a.etapas-tab-link:focus-visible {
     padding: 0.65rem 0.85rem !important;
+    margin: 0 0.2rem !important;
 }
 
-.etapas-tabs-card .md-tabs .nav-link.etapas-tab-link:focus,
-.etapas-tabs-card .md-tabs .nav-link.etapas-tab-link:hover {
-    border-style: solid;
+/*
+ * Tema .md-tabs aplica border:none em :hover — some/aparece borda (efeito indesejado).
+ * Travamos a mesma borda do estado normal também no hover (important > ordem do style.css).
+ */
+.etapas-tabs-card .md-tabs.etapas-tabs-scroll .etapas-tab-link:not(.active):not(.disabled):hover,
+.etapas-tabs-card .md-tabs.etapas-tabs-scroll .etapas-tab-link:not(.active):not(.disabled):focus,
+.etapas-tabs-card .md-tabs.etapas-tabs-scroll .etapas-tab-link:not(.active):not(.disabled):active {
+    border: 2px solid #d8dee4 !important;
+    box-shadow: none !important;
+    background-color: #e9ecef;
+    color: inherit;
+}
+
+.etapas-tabs-card .md-tabs.etapas-tabs-scroll .etapas-tab-link.active:not(.disabled):hover,
+.etapas-tabs-card .md-tabs.etapas-tabs-scroll .etapas-tab-link.active:not(.disabled):focus,
+.etapas-tabs-card .md-tabs.etapas-tabs-scroll .etapas-tab-link.active:not(.disabled):active {
+    border: 2px solid #03999f !important;
+    border-bottom-color: #fff !important;
+    box-shadow: none !important;
+    background: linear-gradient(
+        180deg,
+        rgba(3, 153, 159, 0.22) 0%,
+        rgba(3, 153, 159, 0.09) 48%,
+        #ffffff 100%
+    );
+}
+
+.etapas-tabs-scroll .etapas-tab-link:not(.active):focus,
+.etapas-tabs-scroll .etapas-tab-link:not(.active):focus-visible,
+.etapas-tabs-scroll .etapas-tab-link:not(.active):active {
+    outline: none;
+    box-shadow: none;
+}
+
+.etapas-tabs-scroll .etapas-tab-link.active:not(.disabled):focus,
+.etapas-tabs-scroll .etapas-tab-link.active:not(.disabled):focus-visible,
+.etapas-tabs-scroll .etapas-tab-link.active:not(.disabled):active {
+    outline: none;
+    box-shadow: none;
 }
 
 .etapas-tabs-card .md-tabs .nav-link.etapas-tab-link.active,
 .etapas-tabs-card .md-tabs .nav-link.etapas-tab-link.active:focus,
 .etapas-tabs-card .md-tabs .nav-link.etapas-tab-link.active:hover {
     color: inherit;
-    background-color: #fff;
+    background: linear-gradient(
+        180deg,
+        rgba(3, 153, 159, 0.22) 0%,
+        rgba(3, 153, 159, 0.09) 48%,
+        #ffffff 100%
+    );
     border-radius: 8px 8px 0 0;
+    border: 2px solid #03999f !important;
+    border-bottom-color: #fff !important;
+    box-shadow: none !important;
 }
 
 .etapas-tabs-card .md-tabs .nav-item .slide {
     display: none;
+}
+
+/* Área de conteúdo alinhada visualmente à faixa de abas */
+.etapas-tabs-card .tab-content.card-block {
+    border-top: 1px solid rgba(3, 153, 159, 0.18);
+    background: #fff;
+    border-radius: 0 0 6px 6px;
 }
 
 .etapa-tab-pane {
@@ -1046,6 +1119,12 @@ iframe {
 
 .etapa-tab-loader.is-visible {
     display: flex;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .etapa-tab-loader .spinner-border {
+        animation: none;
+    }
 }
 
 .etapa-tab-loader-inner {

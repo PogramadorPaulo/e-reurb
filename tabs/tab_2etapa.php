@@ -3,7 +3,7 @@
     <input type="hidden" name="idMunicipio" id="idMunicipio" value="<?php echo $idMunicipio; ?>">
     <div class="etapa-inner" id="2etapa" aria-labelledby="2etapa-tab">
         <div class="card-block accordion-block color-accordion-block">
-            <div id="accordion" role="tablist" aria-multiselectable="true">
+            <div id="accordion_etapa2" role="tablist" aria-multiselectable="true">
                 <div class="accordion-panel">
                     <div class=" accordion-heading" role="tab" id="headerProprietariosMatriculas">
                         <h3 class="card-title accordion-title">

@@ -38,14 +38,10 @@ $('#search_query').on('input', function () {
         const id = $('#idProcedimento').val();
         carregarAnexos(1, id);
     }
-    var etapaId = '1';
-    var inner = document.getElementById('etapa1-inner');
-    if (inner) {
-        var pane = inner.closest('.etapa-tab-pane');
-        if (pane && pane.getAttribute('data-etapa-id')) {
-            etapaId = String(pane.getAttribute('data-etapa-id'));
-        }
-    }
+    var etapaId =
+        window.EtapasTabs && typeof EtapasTabs.resolveTabIdFromPane === 'function'
+            ? EtapasTabs.resolveTabIdFromPane('#etapa1-inner', '1')
+            : '1';
     if (window.EtapasTabs) {
         EtapasTabs.registerInit(etapaId, loadAnexosEtapa1);
     } else {

@@ -26,10 +26,17 @@ $(document).ready(function () {
             icon: response.icon
         }).then(() => {
             if (response.status === 'success') {
+                var nextTab =
+                    response.next_etapa_id !== undefined && response.next_etapa_id !== null
+                        ? String(response.next_etapa_id)
+                        : null;
                 if (window.EtapasTabs && typeof EtapasTabs.reloadPreservingTab === 'function') {
-                    EtapasTabs.reloadPreservingTab();
+                    EtapasTabs.reloadPreservingTab(nextTab);
                 } else {
-                    var t = new URLSearchParams(window.location.search).get('tab') || '1';
+                    var t =
+                        nextTab ||
+                        new URLSearchParams(window.location.search).get('tab') ||
+                        '1';
                     window.location.href = window.location.pathname + '?tab=' + encodeURIComponent(t);
                 }
             }

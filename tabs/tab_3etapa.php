@@ -1,7 +1,7 @@
 <?php if ($viewData['user']->hasPermission('processo_3etapa')) : ?>
     <div class="etapa-inner" id="3etapa" aria-labelledby="3etapa-tab">
         <div class="card-block accordion-block color-accordion-block">
-            <div id="accordion" role="tablist" aria-multiselectable="true">
+            <div id="accordion_etapa3" role="tablist" aria-multiselectable="true">
                 <div class="accordion-panel">
                     <div class=" accordion-heading" role="tab" id="headerProprietarios">
                         <h3 class="card-title accordion-title">

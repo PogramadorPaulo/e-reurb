@@ -38,8 +38,12 @@ $('#etapa2_search_query').on('input', function () {
         const id = $('#id').val();
         carregarAnexosEpata2(1, id);
     }
+    var etapaId =
+        window.EtapasTabs && typeof EtapasTabs.resolveTabIdFromPane === 'function'
+            ? EtapasTabs.resolveTabIdFromPane('#etapa2_anexos', '2')
+            : '2';
     if (window.EtapasTabs) {
-        EtapasTabs.registerInit(2, loadAnexosEtapa2);
+        EtapasTabs.registerInit(etapaId, loadAnexosEtapa2);
     } else {
         $(document).ready(loadAnexosEtapa2);
     }

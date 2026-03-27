@@ -20,7 +20,7 @@
             </div>
 
         </div>
-        <div id="accordion" role="tablist" aria-multiselectable="true">
+        <div id="accordion_etapa4" role="tablist" aria-multiselectable="true">
             <div class="accordion-panel">
                 <div class=" accordion-heading" role="tab" id="headerDocumentosEtapa4">
                     <h3 class="card-title accordion-title">

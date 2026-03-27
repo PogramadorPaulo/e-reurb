@@ -50,8 +50,9 @@
                                 $descLinha = $descRaw !== '' ? preg_replace('/\s+/u', ' ', $descRaw) : '';
                                 $titleTooltip = trim($item['etapa_nome'] . ($descLinha !== '' ? ' — ' . $descLinha : ''));
                             ?>
-                               <li class="nav-item etapas-tabs-item">
+                               <li class="nav-item etapas-tabs-item" role="presentation">
                                    <a
+                                       id="etapa_<?php echo (int) $item['etapa_id']; ?>_tab"
                                        class="nav-link etapas-tab-link <?php echo "$activeClass $disabledClass"; ?>"
                                        data-toggle="tab"
                                        data-tab-num="<?php echo (int) $item['etapa_id']; ?>"
@@ -59,6 +60,8 @@
                                        role="tab"
                                        title="<?php echo htmlspecialchars($titleTooltip, ENT_QUOTES, 'UTF-8'); ?>"
                                        aria-controls="etapa_<?php echo $item['etapa_id']; ?>"
+                                       aria-selected="<?php echo ($index === 0) ? 'true' : 'false'; ?>"
+                                       tabindex="<?php echo ($index === 0) ? '0' : '-1'; ?>"
                                        aria-disabled="<?php echo $etapaLiberada ? 'false' : 'true'; ?>">
                                        <span class="etapa-tab-main">
                                            <span class="etapa-tab-title"><?php echo htmlspecialchars($item['etapa_nome']); ?></span>

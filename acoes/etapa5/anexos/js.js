@@ -41,8 +41,12 @@ $('#etapa5_search_query').on('input', function () {
             window.carregarModelosEtapa5();
         }
     }
+    var etapaId =
+        window.EtapasTabs && typeof EtapasTabs.resolveTabIdFromPane === 'function'
+            ? EtapasTabs.resolveTabIdFromPane('#etapa5_anexos', '5')
+            : '5';
     if (window.EtapasTabs) {
-        EtapasTabs.registerInit(5, loadEtapa5);
+        EtapasTabs.registerInit(etapaId, loadEtapa5);
     } else {
         $(document).ready(loadEtapa5);
     }
