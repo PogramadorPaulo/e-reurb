@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atualização do Processo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .email-container {
+            margin-top: 20px;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .email-header {
+            background-color: #03999f;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .email-header h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .email-body {
+            padding: 20px;
+            color: #333333;
+            line-height: 1.6;
+        }
+
+        .email-body h2 {
+            color: #03999f;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .email-body p {
+            margin: 0 0 15px;
+        }
+
+        .email-body .highlight {
+            background-color: #f0f8ff;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-style: italic;
+        }
+
+        .email-footer {
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            color: #777777;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 15px;
+            background-color: #03999f;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .warning {
+            color: #ff0000;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="email-container">
+        <!-- Cabeçalho -->
+        <div class="email-header">
+            <h1>{{title}}</h1>
+        </div>
+
+        <!-- Corpo do e-mail -->
+        <div class="email-body">
+            <h2>Olá, {{name}}!</h2>
+            
+            <p class="highlight">{{notificationContent}}</p>
+
+            <p>Para mais detalhes sobre o andamento do processo, clique no botão abaixo:</p>
+            <a href="{{link}}" class="button" target="_blank" title="Visualizar Detalhes do processo">Visualizar Detalhes</a>
+            <p>Atenciosamente,<br>Equipe de Notificações</p>
+        </div>
+
+        <!-- Rodapé -->
+        <div class="email-footer">
+            <p>Este é um e-mail automático. Por favor, não responda.</p>
+            <p>&copy; {{year}} {{NAME}}. Todos os direitos reservados.</p>
+        </div>
+    </div>
+</body>
+
+</html>

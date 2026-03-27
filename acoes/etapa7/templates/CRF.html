@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>CRF</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            text-align: center;
+            color: #555555;
+        }
+
+        p {
+            text-align: justify;
+        }
+
+        i {
+            font-style: italic;
+            font-size: 11px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div style="text-align: center; border-bottom: 1px solid #ccc; padding-bottom: 15px; margin-bottom: 20px;">
+        <img src="{{logo}}" alt="Logo do Município" style="width: 120px; height: auto; margin-bottom: 4px;"><br>
+        <strong style="font-size: 14px;">{{municipio_name}} / {{municipio_uf}}</strong><br>
+        <span style="font-size: 12px;">
+            CNPJ: {{municipio_cnpj}}<br>
+            Endereço: {{municipio_endereco}}<br>
+            CEP: {{municipio_cep}}
+        </span>
+    </div>
+
+    <h1>CERTIDÃO DE REGULARIZAÇÃO FUNDIÁRIA</h1>
+
+    <p><strong>Número do procedimento:</strong> {{numero_procedimento}}</p>
+    <p><strong>Modalidade:</strong> {{modalidade}}</p>
+    <p><strong>Tipo:</strong> {{tipo}}</p>
+
+    <p>
+        Eu, <b>{{municipio_prefeito}}</b>, inscrito no CNPF/MF sob o nº <i>{{municipio_prefeito_cpf}}</i>, portador da
+        cédula
+        de identidade Registro Geral nº <i>{{municipio_prefeito_rg}}</i>, <b>Prefeito Municipal de
+            {{municipio_name}}</b>, em pleno
+        exercício do mandato,
+        na forma da Lei e nos termos dos Artigos 30 e 41 da Lei Federal nº 13.465/2017, {{municipio_normativas}},
+        <b>CERTIFICO</b> para os devidos fins de registro imobiliário, que tramitou
+        perante a Comissão Municipal de Regularização Fundiária, nomeada pelo Decreto
+        <i>{{municipio_decreto_comissao}}</i>.
+        O Procedimento Administrativo Nº {{numero_procedimento}} requerido pela Comissão de Regularização Fundiária
+        Urbana de {{municipio_name}}, através de sua presidente, <i>{{presidente_comissao}}</i>, teve início através da
+        Portaria
+        nº <i>{{n_portaria}}</i> de <i>{dia}</i> de <i>{mes}</i> de <i>{ano}</i>, procedimento
+        ora finalizado por decisão da Comissão, emitindo o Projeto completo, conforme em anexo, que acato e defiro,
+        informando os seguintes requisitos existentes no referido procedimento:
+    </p>
+
+    <p>
+        1 - <b>Nome do núcleo:</b> {{nucleo_nome}} <br>
+        2 - <b>Localização:</b> {{nucleo_endereco}}<br>
+        3 - <b>Memorial Descritivo:</b><br><i>{{nucleo_memorial}}</i><br>
+        4 - <b>Modalidade da Regularização:</b> {{modalidade}}<br>
+        5 - <b>Projeto Técnico da Regularização:</b> Segue em anexo, assinado pelo engenheiro responsável e pela equipe
+        da Reurb {{municipio_name}}<br>
+        6 - O Núcleo informal passa a fazer parte da área urbana do município, eis que já dentro do perímetro urbano
+        conforme Lei Municipal {{municipio_lei_perimetroUrbano}}<br>
+        7 - <b>Da responsabilidade das obras e serviços constantes do cronograma:</b><br>
+        Conforme certidão de cronograma na forma do Art. 41, IV da Lei 13.465/17, será do poder público municipal,
+        através de recursos próprios ou de convênios, repasses específicos
+        ou outra forma, a implementação do restante da infraestrutura faltante no núcleo, a saber, energia elétrica,
+        meio-fio, esgoto e pavimentação (podendo ser asfáltica ou outra modalidade),
+        que, considerando haver possibilidade de regularização posterior individual via Reurb-S, poderá ter auxílio dos
+        ocupantes, tudo no prazo do {§1º} do Art. {} da Lei Complementar
+        Municipal {{municipio_lei_municipal}}, ou programas próprios ou dos governos federal e estadual.<br>
+
+        8 - <b>Lotes Regularizados:</b> Os lotes regularizados são os que fazem parte do memorial descritivo, aprovado
+        no projeto de regularização em anexo, resumidamente a saber:<br>
+    </p>
+
+    <ul>
+        <h3>Lotes específicos (Tipo E)</h3>
+        {{lotes_E_html}}
+
+        <h3>Lotes sociais (Tipo S)</h3>
+        {{lotes_S_html}}
+
+    </ul>
+
+    <br>
+    <p><b>PROPRIETÁRIOS:</b></p>
+    <p>{{proprietarios_tabulares_html}}</p>
+    <br>
+
+    <p>9 - A presente Certidão vai acompanhada dos seguintes documentos: Projeto da
+        Regularização, Memorial descritivo
+        das Quadras, Mapas geográficos, 1 via do ART e principais
+        documentos do processo administrativo.</p>
+
+    <p>10 - Conforme Art. 22, §6º da Lei 13.465/17, a área remanescente da matrícula do
+        imóvel atingido deve ser apurada
+        e realizada a retificação por responsabilidade de seus proprietários.</p>
+
+    <p>11 - Conclui-se, portanto, e certifico que a poligonal parcial definida como
+        "{{nucleo_nome}}" está apta a
+        ser regularizada em sua totalidade mediante Legitimação Fundiária através da
+        Regularização Fundiária por Interesse Social – Reurb-S (sem prejuízo de posterior indicação de regularização
+        individual dos lotes não identificados via Reurb-E), cuja área se encontra localizada
+        em área consolidada e dotada de parcial infraestrutura básica, com termo de responsabilidade do Município a
+        implementar gradualmente nos termos da Lei.</p>
+    <br>
+    <p style="text-align: center;">
+        {{municipio_name}} - {{municipio_uf}}, {{dia}} de {{mes}} de {{ano}}
+    </p>
+    <p style=text-align:center>{{municipio_prefeito}}<br>{{municipio_autoridade}}</p>
+
+</body>
+
+</html>

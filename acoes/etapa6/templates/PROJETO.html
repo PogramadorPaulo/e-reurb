@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>PROJETO</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            text-align: center;
+            color: #555555;
+        }
+
+        p {
+            text-align: justify;
+        }
+
+        i {
+            font-style: italic;
+            font-size: 11px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div style="text-align: center; border-bottom: 1px solid #ccc; padding-bottom: 15px; margin-bottom: 20px;">
+        <img src="{{logo}}" alt="Logo do Município" style="width: 120px; height: auto; margin-bottom: 10px;"><br>
+        <strong style="font-size: 14px;">{{municipio_name}} / {{municipio_uf}}</strong><br>
+        <span style="font-size: 12px;">
+            CNPJ: {{municipio_cnpj}}<br>
+            Endereço: {{municipio_endereco}}<br>
+            CEP: {{municipio_cep}}
+        </span>
+    </div>
+
+    <br>
+
+    <h2 style="text-align: center; text-transform: uppercase;">PROGRAMA DE REGULARIZAÇÃO FUNDIÁRIA DE INTERESSE SOCIAL
+        DA PREFEITURA MUNICIPAL DE
+        {{municipio_name}}/{{municipio_uf}}</h2>
+    <h2 style="text-align: center; text-transform: uppercase;">PRF – PROJETO DE REGULARIZAÇÃO FUNDIÁRIA – REURB –
+        “{{nucleo_nome}}” PROCESSO
+        ADMINISTRATIVO {{numero_procedimento}}
+    </h2>
+    <br>
+
+
+    <p>
+        Certificamos que o Projeto de Regularização Fundiária está sendo emitido em anexo, considerando as
+        características da ocupação e da área ocupada, onde foi definido parâmetros urbanísticos e ambientais
+        específicos, além de identificar os lotes, as vias de circulação, bem como todas exigências do art. 35 e seus
+        incisos, da Lei 13.465 de 11 de julho de 2017.</p>
+    <p>
+        <strong>Equipe técnica e de apoio:</strong>
+    </p>
+    <p>
+        {{comissao_html}}
+    </p>
+    <br>
+    <br>
+
+    <p style="text-align: center;">
+        {{municipio_name}} - {{municipio_uf}}, {{dia}} de {{mes}} de {{ano}}
+    </p>
+    <p style=text-align:center>{{municipio_prefeito}}<br>{{municipio_autoridade}}</p>
+
+</body>
+
+</html>

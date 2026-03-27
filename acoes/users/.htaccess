@@ -1,0 +1,3 @@
+RewriteEngine On
+ErrorDocument 403 http://index/
+Options All -Indexes
