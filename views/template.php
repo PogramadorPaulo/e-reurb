@@ -151,17 +151,17 @@
               </li>
             </ul>
             <ul class="nav-right">
-              <li class="header-notification">
+              <li class="header-notification" id="header_notifications">
                 <a href="#" class="waves-effect waves-light">
                   <i class="ti-bell"></i>
                   <span id="notif"></span>
                 </a>
-                <ul class="show-notification">
-                  <li>
+                <ul class="show-notification notification-dropdown">
+                  <li class="notification-actions">
                     <a href="<?php echo BASE_URL ?>notifications"><i class="ti-bell"></i> Ver todas notificações</a>
-
+                    <button type="button" class="btn btn-primary btn-sm" id="mark_all_notifications" disabled>Marcar todas como lidas</button>
                   </li>
-                  <div id="content_notifications"></div>
+                  <li id="content_notifications" class="notification-list-wrapper"></li>
 
                 </ul>
               </li>
@@ -349,10 +349,13 @@
 
   function load_data() {
     $.ajax({
-      url: "<?php echo BASE_URL; ?>acoes/fetch-notifications-nao-lida.php?id=<?php echo $viewData['user']->getId(); ?>",
-      method: "POST",
+      url: "<?php echo BASE_URL; ?>acoes/fetch-notifications-nao-lida.php",
+      method: "GET",
       success: function(data) {
         $('#content_notifications').html(data);
+      },
+      error: function() {
+        $('#content_notifications').html('<div class="label label-danger m-3">Não foi possível carregar as notificações.</div>');
       }
     });
   }
@@ -360,17 +363,56 @@
   function get_notificacao() {
     $.ajax({
       type: "GET",
-      url: "<?php echo BASE_URL ?>acoes/get_new_notifications.php?id=<?php echo $viewData['user']->getId(); ?>",
+      url: "<?php echo BASE_URL ?>acoes/get_new_notifications.php",
       success: function(data) {
-        if (data != 0) {
+        var total = parseInt(data, 10) || 0;
+        if (total > 0) {
           $("#notif").show();
           $("#notif").html('<span class="badge bg-c-red"></span>');
+          $("#mark_all_notifications").prop("disabled", false);
         } else {
           $("#notif").hide();
+          $("#mark_all_notifications").prop("disabled", true);
         }
       }
     });
   }
+
+  $("#header_notifications > a").on("click", function() {
+    load_data();
+    get_notificacao();
+  });
+
+  $("#mark_all_notifications").on("click", function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    var $button = $(this);
+    $button.prop("disabled", true).text("Marcando...");
+
+    $.ajax({
+      type: "POST",
+      url: "<?php echo BASE_URL ?>acoes/notifications_marcar_todas_lidas.php",
+      dataType: "json",
+      success: function(response) {
+        if (response.status === "success") {
+          load_data();
+          get_notificacao();
+          return;
+        }
+
+        $button.prop("disabled", false);
+        alert(response.message || "Não foi possível marcar as notificações como lidas.");
+      },
+      error: function() {
+        $button.prop("disabled", false);
+        alert("Não foi possível marcar as notificações como lidas.");
+      },
+      complete: function() {
+        $button.text("Marcar todas como lidas");
+      }
+    });
+  });
 
   // Tempo de atualização 2 minutos=  * 2 * 60 *1000 = 120000 
   setInterval("get_notificacao()", 120000);

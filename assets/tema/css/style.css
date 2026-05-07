@@ -8421,6 +8421,33 @@ table tbody .border-bottom-info td {
   padding: 10px 20px;
 }
 
+.header-navbar .navbar-wrapper .navbar-container .header-notification .notification-actions {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.header-navbar .navbar-wrapper .navbar-container .header-notification .notification-actions a {
+  flex: 1;
+}
+
+.header-navbar .navbar-wrapper .navbar-container .header-notification #content_notifications {
+  display: block;
+  max-height: 420px;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.header-navbar .navbar-wrapper .navbar-container .header-notification #content_notifications .label {
+  display: inline-block;
+}
+
+.header-navbar .navbar-wrapper .navbar-container .header-notification .notification-list {
+  margin: 0;
+  padding: 0;
+}
+
 .header-navbar .navbar-wrapper .navbar-container .header-notification .show-notification li:first-child h6,
 .header-navbar .navbar-wrapper .navbar-container .header-notification .profile-notification li:first-child h6 {
   display: inline-block;

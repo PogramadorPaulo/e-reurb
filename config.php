@@ -31,7 +31,7 @@ if (ENVIRONMENT == 'development') {
 	define("TAMANHO_UPLOAD", "20");
 
 	// BASE DE DADOS
-	$config['dbname'] = 'ereurb27_bd';
+	$config['dbname'] = 'bd_reurb_novo';
 	$config['host'] = 'localhost';
 	$config['dbuser'] = 'root';
 	$config['dbpass'] = '';
@@ -69,6 +69,7 @@ if (ENVIRONMENT == 'development') {
 }
 $config['default_lang'] = 'pt-br';
 
+/** @var PDO $db */
 global $db;
 try {
 	$db = new PDO(

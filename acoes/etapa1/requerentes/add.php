@@ -1,6 +1,81 @@
 <?php
 include_once "../../../config.php";
 
+function somenteNumerosRequerente($valor)
+{
+    return preg_replace('/\D+/', '', (string) $valor);
+}
+
+function validarCpfRequerente($cpf)
+{
+    $cpf = somenteNumerosRequerente($cpf);
+
+    if (strlen($cpf) !== 11 || preg_match('/^(\d)\1{10}$/', $cpf)) {
+        return false;
+    }
+
+    for ($digito = 9; $digito < 11; $digito++) {
+        $soma = 0;
+        for ($i = 0; $i < $digito; $i++) {
+            $soma += (int) $cpf[$i] * (($digito + 1) - $i);
+        }
+
+        $resto = ($soma * 10) % 11;
+        if ($resto === 10) {
+            $resto = 0;
+        }
+
+        if ($resto !== (int) $cpf[$digito]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function validarCnpjRequerente($cnpj)
+{
+    $cnpj = somenteNumerosRequerente($cnpj);
+
+    if (strlen($cnpj) !== 14 || preg_match('/^(\d)\1{13}$/', $cnpj)) {
+        return false;
+    }
+
+    $tamanho = strlen($cnpj) - 2;
+    $numeros = substr($cnpj, 0, $tamanho);
+    $digitos = substr($cnpj, $tamanho);
+    $soma = 0;
+    $pos = $tamanho - 7;
+
+    for ($i = $tamanho; $i >= 1; $i--) {
+        $soma += (int) $numeros[$tamanho - $i] * $pos--;
+        if ($pos < 2) {
+            $pos = 9;
+        }
+    }
+
+    $resultado = $soma % 11 < 2 ? 0 : 11 - ($soma % 11);
+    if ($resultado !== (int) $digitos[0]) {
+        return false;
+    }
+
+    $tamanho++;
+    $numeros = substr($cnpj, 0, $tamanho);
+    $soma = 0;
+    $pos = $tamanho - 7;
+
+    for ($i = $tamanho; $i >= 1; $i--) {
+        $soma += (int) $numeros[$tamanho - $i] * $pos--;
+        if ($pos < 2) {
+            $pos = 9;
+        }
+    }
+
+    $resultado = $soma % 11 < 2 ? 0 : 11 - ($soma % 11);
+    return $resultado === (int) $digitos[1];
+}
+
+/** @var PDO $db */
 
 $idUser = filter_input(INPUT_POST, "idUser", FILTER_SANITIZE_NUMBER_INT);
 $id = filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
@@ -64,17 +139,60 @@ if (
     exit;
 }
 
+if (!in_array($tipo, ['Física', 'Jurídica'], true)) {
+    echo json_encode([
+        'status' => 'warning',
+        'title' => 'Atenção',
+        'message' => 'Selecione o tipo de pessoa.',
+        'icon' => 'warning',
+    ]);
+    exit;
+}
+
+if ($tipo === 'Física') {
+    $cnpj = '';
+    $i_estadual = '';
+    $i_municipal = '';
+    $representante = '';
+    $cargo = '';
+
+    if (!validarCpfRequerente($cpf)) {
+        echo json_encode([
+            'status' => 'warning',
+            'title' => 'Atenção',
+            'message' => 'Informe um CPF válido.',
+            'icon' => 'warning',
+        ]);
+        exit;
+    }
+} elseif ($tipo === 'Jurídica') {
+    $cpf = '';
+    $pai = '';
+    $mae = '';
+
+    if (!validarCnpjRequerente($cnpj)) {
+        echo json_encode([
+            'status' => 'warning',
+            'title' => 'Atenção',
+            'message' => 'Informe um CNPJ válido.',
+            'icon' => 'warning',
+        ]);
+        exit;
+    }
+}
+
 // Verificar se o CPF ou CNPJ já está cadastrado
+$campoDocumento = $tipo === 'Jurídica' ? 'cnpj' : 'cpf';
+$valorDocumento = $tipo === 'Jurídica' ? $cnpj : $cpf;
 $check = $db->prepare("
-    SELECT id_procedimento, cpf, cnpj 
+    SELECT id_procedimento, cpf, cnpj
     FROM requerentes 
-    WHERE (cpf = :cpf OR cnpj = :cnpj) 
+    WHERE {$campoDocumento} = :documento
       AND id_procedimento = :id 
       AND status_requente = 1 
     LIMIT 1
 ");
-$check->bindValue(":cpf", $cpf);
-$check->bindValue(":cnpj", $cnpj);
+$check->bindValue(":documento", $valorDocumento);
 $check->bindValue(":id", $id);
 $check->execute();
 
@@ -170,6 +288,14 @@ if ($sql->rowCount() > 0) {
         'tittle' => 'Sucesso',
         'message' => 'Cadastro efetuado com sucesso.',
         'icon' => 'success',
+    );
+    echo json_encode($response);
+} else {
+    $response = array(
+        'status' => 'error',
+        'tittle' => 'Erro',
+        'message' => 'Não foi possível cadastrar o requerente.',
+        'icon' => 'error',
     );
     echo json_encode($response);
 }

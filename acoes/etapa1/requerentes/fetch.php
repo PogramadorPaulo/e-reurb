@@ -1,31 +1,39 @@
 
 <?php
 require_once('../../../config.php');
+/** @var PDO $db */
 
-$limit = '10'; // Limite de resultados por página
-$page = isset($_POST['page']) && $_POST['page'] > 1 ? $_POST['page'] : 1;
+$limit = 10; // Limite de resultados por página
+$page = filter_input(INPUT_POST, 'page', FILTER_VALIDATE_INT);
+$idProcedimento = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+$busca = filter_input(INPUT_POST, 'query', FILTER_SANITIZE_SPECIAL_CHARS);
+$output = '';
 
-if ($page > 1) {
-  $start = (($page - 1) * $limit);
-} else {
-  $start = 0;
+if (empty($page) || $page < 1) {
+  $page = 1;
 }
 
+$start = ($page - 1) * $limit;
 
 $query = "SELECT * FROM requerentes WHERE 1=1 AND status_requente=1";
-if ($_POST['id'] != '') {
-  $query .= " AND id_procedimento = " . $_POST['id'] . " ";
+$params = array();
+
+if (!empty($idProcedimento)) {
+  $query .= " AND id_procedimento = :id ";
+  $params[':id'] = $idProcedimento;
 } else {
   $output .= '
   <div>
    <label class="text-secondary">Ops!Nada encontrado</label>
   <div>
   ';
+  echo $output;
   exit;
 }
 
-if ($_POST['query'] != '') {
-  $query .= ' AND nome LIKE "%' . str_replace(' ', '%', $_POST['query']) . '%"  ';
+if (!empty($busca)) {
+  $query .= ' AND nome LIKE :busca ';
+  $params[':busca'] = '%' . str_replace(' ', '%', $busca) . '%';
 }
 
 
@@ -34,14 +42,19 @@ $query .= ' ORDER BY nome ';
 $filter_query = $query . 'LIMIT ' . $start . ', ' . $limit . '';
 
 $statement = $db->prepare($query);
+foreach ($params as $campo => $valor) {
+  $statement->bindValue($campo, $valor);
+}
 $statement->execute();
 $total_data = $statement->rowCount();
 
 $statement = $db->prepare($filter_query);
+foreach ($params as $campo => $valor) {
+  $statement->bindValue($campo, $valor);
+}
 $statement->execute();
 $result = $statement->fetchAll();
 $total_filter_data = $statement->rowCount();
-$output = '';
 $status = '';
 $icone = '<i class="fa fa-file-text-o" aria-hidden="true"></i>';
 if ($total_data > 0) {

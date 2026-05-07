@@ -12,6 +12,7 @@ $(document).ready(function () {
             $.post('../../acoes/etapa1/requerentes/visualizar_requerente.php', dados, function (retorna) {
                 //Carregar o conteúdo para o usuário
                 $("#visul_dados").html(retorna);
+                inicializarFormularioRequerente($('.form-edit-requerente'));
                 $('#modalEditRequerente').modal('show');
             });
         }
@@ -184,9 +185,19 @@ $(document).ready(function () {
     var spinner = $('#loader');
     // Submissão do formulário usando AJAX
     $('.form-new-requerente').on('submit', function (e) {
-        spinner.show();
         e.preventDefault(); // Previne o envio padrão do formulário
         let form = $(this);
+
+        if (!validarDocumentoRequerente(form)) {
+            Swal.fire({
+                title: 'Atenção',
+                text: form.find('input[name="tipo"]:checked').val() === 'Jurídica' ? 'Informe um CNPJ válido.' : 'Informe um CPF válido.',
+                icon: 'warning'
+            });
+            return;
+        }
+
+        spinner.show();
         let formData = new FormData(this); // Captura os dados do formulário
 
         $.ajax({
@@ -234,9 +245,19 @@ $(document).ready(function () {
     var spinner = $('#loader');
     // Submissão do formulário usando AJAX
     $('.form-edit-requerente').on('submit', function (e) {
-        spinner.show();
         e.preventDefault(); // Previne o envio padrão do formulário
         let form = $(this);
+
+        if (!validarDocumentoRequerente(form)) {
+            Swal.fire({
+                title: 'Atenção',
+                text: form.find('input[name="tipo"]:checked').val() === 'Jurídica' ? 'Informe um CNPJ válido.' : 'Informe um CPF válido.',
+                icon: 'warning'
+            });
+            return;
+        }
+
+        spinner.show();
         let formData = new FormData(this); // Captura os dados do formulário
 
         $.ajax({
@@ -279,176 +300,179 @@ $(document).ready(function () {
 });
 // Fim // 
 
-// Validar CPF/CNPJ
-$('#cpf').on('keyup', function () {
-    var strCPF = document.getElementById("cpf").value;
-    strCPF = strCPF.replace(/[^\d]+/g, '');
-    var qntNumero = strCPF.length;
-    if (qntNumero <= 11) {
-        function TestaCPF(strCPF) {
-            var Soma;
-            var Resto;
-            Soma = 0;
+// Validar CPF/CNPJ e tipo de pessoa
+function somenteNumeros(valor) {
+    return (valor || '').replace(/\D+/g, '');
+}
 
+function validarCPF(cpf) {
+    cpf = somenteNumeros(cpf);
 
-            if (strCPF == "00000000000" ||
-                strCPF == "11111111111" ||
-                strCPF == "22222222222" ||
-                strCPF == "33333333333" ||
-                strCPF == "44444444444" ||
-                strCPF == "55555555555" ||
-                strCPF == "66666666666" ||
-                strCPF == "77777777777" ||
-                strCPF == "88888888888" ||
-                strCPF == "99999999999")
-                return false;
+    if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
+        return false;
+    }
 
-            for (i = 1; i <= 9; i++) Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (11 - i);
-            Resto = (Soma * 10) % 11;
+    let soma = 0;
+    for (let i = 0; i < 9; i++) {
+        soma += parseInt(cpf.charAt(i), 10) * (10 - i);
+    }
 
-            if ((Resto == 10) || (Resto == 11)) Resto = 0;
-            if (Resto != parseInt(strCPF.substring(9, 10))) return false;
+    let resto = (soma * 10) % 11;
+    if (resto === 10) {
+        resto = 0;
+    }
 
-            Soma = 0;
-            for (i = 1; i <= 10; i++) Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (12 - i);
-            Resto = (Soma * 10) % 11;
+    if (resto !== parseInt(cpf.charAt(9), 10)) {
+        return false;
+    }
 
-            if ((Resto == 10) || (Resto == 11)) Resto = 0;
-            if (Resto != parseInt(strCPF.substring(10, 11))) return false;
-            return true;
+    soma = 0;
+    for (let i = 0; i < 10; i++) {
+        soma += parseInt(cpf.charAt(i), 10) * (11 - i);
+    }
+
+    resto = (soma * 10) % 11;
+    if (resto === 10) {
+        resto = 0;
+    }
+
+    return resto === parseInt(cpf.charAt(10), 10);
+}
+
+function validarCNPJ(cnpj) {
+    cnpj = somenteNumeros(cnpj);
+
+    if (cnpj.length !== 14 || /^(\d)\1{13}$/.test(cnpj)) {
+        return false;
+    }
+
+    let tamanho = cnpj.length - 2;
+    let numeros = cnpj.substring(0, tamanho);
+    let digitos = cnpj.substring(tamanho);
+    let soma = 0;
+    let pos = tamanho - 7;
+
+    for (let i = tamanho; i >= 1; i--) {
+        soma += parseInt(numeros.charAt(tamanho - i), 10) * pos--;
+        if (pos < 2) {
+            pos = 9;
         }
     }
 
-    if (TestaCPF(strCPF) == false) {
-        //alert('CPF Inválido');
-        //document.getElementById("cpf").focus();
-        document.getElementById("cpf").style.border = "2px solid red";
-        document.getElementById("btn-salvar-re").disabled = true;
-
-
-    }
-    if (TestaCPF(strCPF) == true) {
-
-        document.getElementById("cpf").style.border = "2px solid green";
-        document.getElementById("btn-salvar-re").disabled = false;
+    let resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+    if (resultado !== parseInt(digitos.charAt(0), 10)) {
+        return false;
     }
 
-});
+    tamanho += 1;
+    numeros = cnpj.substring(0, tamanho);
+    soma = 0;
+    pos = tamanho - 7;
 
-// Validar cnpj
-$('#cnpj').on('keyup', function () {
-    var cnpj = document.getElementById("cnpj").value;
-    cnpj = cnpj.replace(/[^\d]+/g, '');
-    var qntNumero = cnpj.length;
-
-    if (qntNumero <= 14) {
-        function validarCNPJ(cnpj) {
-
-            if (cnpj == '') return false;
-
-            if (cnpj.length != 14)
-                return false;
-
-            // Elimina CNPJs invalidos conhecidos
-            if (cnpj == "00000000000000" ||
-                cnpj == "11111111111111" ||
-                cnpj == "22222222222222" ||
-                cnpj == "33333333333333" ||
-                cnpj == "44444444444444" ||
-                cnpj == "55555555555555" ||
-                cnpj == "66666666666666" ||
-                cnpj == "77777777777777" ||
-                cnpj == "88888888888888" ||
-                cnpj == "99999999999999")
-                return false;
-
-            // Valida DVs
-            tamanho = cnpj.length - 2
-            numeros = cnpj.substring(0, tamanho);
-            digitos = cnpj.substring(tamanho);
-            soma = 0;
-            pos = tamanho - 7;
-            for (i = tamanho; i >= 1; i--) {
-                soma += numeros.charAt(tamanho - i) * pos--;
-                if (pos < 2)
-                    pos = 9;
-            }
-            resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-            if (resultado != digitos.charAt(0))
-                return false;
-
-            tamanho = tamanho + 1;
-            numeros = cnpj.substring(0, tamanho);
-            soma = 0;
-            pos = tamanho - 7;
-            for (i = tamanho; i >= 1; i--) {
-                soma += numeros.charAt(tamanho - i) * pos--;
-                if (pos < 2)
-                    pos = 9;
-            }
-            resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-            if (resultado != digitos.charAt(1))
-                return false;
-
-            return true;
-
+    for (let i = tamanho; i >= 1; i--) {
+        soma += parseInt(numeros.charAt(tamanho - i), 10) * pos--;
+        if (pos < 2) {
+            pos = 9;
         }
     }
-    if (validarCNPJ(cnpj) == false) {
-        //document.getElementById("cnpj").focus();
-        document.getElementById("cnpj").style.border = "2px solid red";
-        document.getElementById("btn-salvar-re").disabled = true;
 
+    resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+    return resultado === parseInt(digitos.charAt(1), 10);
+}
+
+function getBotaoSalvarRequerente($form) {
+    return $form.hasClass('form-new-requerente') ? $('#btn-salvar-re') : $('#btn-salvar');
+}
+
+function marcarCampoDocumento($campo, valido, preenchido) {
+    if (!preenchido) {
+        $campo.css('border', '');
+        return;
     }
-    if (validarCNPJ(cnpj) == true) {
-        document.getElementById("cnpj").style.border = "2px solid green";
-        document.getElementById("btn-salvar-re").disabled = false;
+
+    $campo.css('border', valido ? '2px solid green' : '2px solid red');
+}
+
+function validarDocumentoRequerente($form) {
+    const tipoPessoa = $form.find('input[name="tipo"]:checked').val();
+    const $cpf = $form.find('input[name="cpf"]');
+    const $cnpj = $form.find('input[name="cnpj"]');
+    const $botaoSalvar = getBotaoSalvarRequerente($form);
+    let valido = true;
+
+    if (tipoPessoa === 'Física') {
+        const cpf = somenteNumeros($cpf.val());
+        valido = validarCPF(cpf);
+        marcarCampoDocumento($cpf, valido, cpf.length > 0);
+        $cnpj.css('border', '');
+    } else if (tipoPessoa === 'Jurídica') {
+        const cnpj = somenteNumeros($cnpj.val());
+        valido = validarCNPJ(cnpj);
+        marcarCampoDocumento($cnpj, valido, cnpj.length > 0);
+        $cpf.css('border', '');
     }
 
+    $botaoSalvar.prop('disabled', !valido);
+    return valido;
+}
 
+function aplicarMascaraRequerente($form) {
+    if ($.fn.mask) {
+        $form.find('input[name="cpf"]').mask('999.999.999-99');
+        $form.find('input[name="cnpj"]').mask('99.999.999/9999-99');
+        $form.find('input[name="cep"]').mask('99999-999');
+        $form.find('input[name="celular"]').mask('(99) 99999-9999');
+        $form.find('input[name="telefone"]').mask('(99) 9999-9999');
+    }
+}
+
+function aplicarTipoPessoaRequerente($form) {
+    const tipoPessoa = $form.find('input[name="tipo"]:checked').val() || 'Física';
+    const pessoaFisica = tipoPessoa === 'Física';
+
+    if (!$form.find('input[name="tipo"]:checked').length) {
+        $form.find('input[name="tipo"][value="Física"]').prop('checked', true);
+    }
+
+    $form.find('input[name="cpf"]').prop('disabled', !pessoaFisica);
+    $form.find('input[name="cnpj"]').prop('disabled', pessoaFisica);
+    $form.find('input[name="i_estadual"], input[name="i_municipal"], input[name="representante"], input[name="cargo"]').prop('disabled', pessoaFisica);
+    $form.find('input[name="pai"], input[name="mae"]').prop('disabled', !pessoaFisica);
+
+    if (pessoaFisica) {
+        $form.find('input[name="cnpj"], input[name="i_estadual"], input[name="i_municipal"], input[name="representante"], input[name="cargo"]').val('').css('border', '');
+        $form.find('input[name="cpf"]').focus();
+    } else {
+        $form.find('input[name="cpf"], input[name="pai"], input[name="mae"]').val('').css('border', '');
+        $form.find('input[name="cnpj"]').focus();
+    }
+
+    validarDocumentoRequerente($form);
+}
+
+function inicializarFormularioRequerente($form) {
+    aplicarMascaraRequerente($form);
+    aplicarTipoPessoaRequerente($form);
+}
+
+$(document).on('input keyup blur', '.form-new-requerente input[name="cpf"], .form-new-requerente input[name="cnpj"], .form-edit-requerente input[name="cpf"], .form-edit-requerente input[name="cnpj"]', function () {
+    validarDocumentoRequerente($(this).closest('form'));
 });
-// FIM //
 
-// VALIDAR TIPO PESSOA //
+$(document).on('change click', '.form-new-requerente input[name="tipo"], .form-edit-requerente input[name="tipo"]', function () {
+    aplicarTipoPessoaRequerente($(this).closest('form'));
+});
+
 $(document).ready(function () {
-    document.getElementById("fisica").checked = true;
-    document.getElementById("cpf").focus();
-    document.getElementById("cnpj").disabled = true;
-    document.getElementById("i_estadual").disabled = true;
-    document.getElementById("i_municipal").disabled = true;
-    document.getElementById("pai").disabled = false;
-    document.getElementById("mae").disabled = false;
-    document.getElementById("representante").disabled = true;
-    document.getElementById("cargo").disabled = true;
-    $('#fisica').click(function () {
-        document.getElementById("cpf").disabled = false;
-        document.getElementById("i_estadual").disabled = true;
-        document.getElementById("i_municipal").disabled = true;
-        document.getElementById("pai").disabled = false;
-        document.getElementById("mae").disabled = false;
-        document.getElementById("representante").disabled = true;
-        document.getElementById("cargo").disabled = true;
-        document.getElementById("cnpj").disabled = true;
-        document.getElementById("cnpj").value = '';
-        document.getElementById("cpf").focus();
-        document.getElementById("juridica").checked = false;
+    inicializarFormularioRequerente($('.form-new-requerente'));
+});
 
-    })
+$('#modalNewRequerente').on('shown.bs.modal', function () {
+    inicializarFormularioRequerente($(this).find('.form-new-requerente'));
+});
 
-    $('#juridica').click(function () {
-        document.getElementById("cpf").disabled = true;
-        document.getElementById("i_estadual").disabled = false;
-        document.getElementById("i_municipal").disabled = false;
-        document.getElementById("representante").disabled = false;
-        document.getElementById("cargo").disabled = false;
-        document.getElementById("pai").disabled = true;
-        document.getElementById("mae").disabled = true;
-        document.getElementById("cnpj").disabled = false;
-        document.getElementById("cnpj").focus();
-        document.getElementById("cpf").value = '';
-        document.getElementById("fisica").checked = false;
-
-    })
+$('#modalEditRequerente').on('shown.bs.modal', function () {
+    inicializarFormularioRequerente($(this).find('.form-edit-requerente'));
 });
 // FIM //
 
