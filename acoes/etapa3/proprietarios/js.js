@@ -202,13 +202,14 @@ $(document).ready(function () {
                     icon: response.icon
                 });
             },
-            error: function (error) {
+            error: function (xhr) {
                 $('#content').css("opacity", "");
                 spinner.hide();
+                const response = xhr.responseJSON;
                 Swal.fire({
-                    title: 'Erro',
-                    text: 'Tente novamente',
-                    icon: 'error' // Pode ser 'success', 'error', 'warning', 'info' ou 'question'
+                    title: response ? jsonResponseTitle(response) : 'Erro',
+                    text: response?.message || 'Tente novamente',
+                    icon: response?.icon || 'error'
                 });
 
             }

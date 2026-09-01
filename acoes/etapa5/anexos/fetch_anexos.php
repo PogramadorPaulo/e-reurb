@@ -53,7 +53,9 @@ $result = $statement->fetchAll();
 $output = '';
 
 if ($total_data > 0) {
-  $canDelete = hasPermission($_SESSION['uid'], 'processo_5etapa_excluir_documento', $db);
+  $userId = filter_var($_SESSION['uid'] ?? null, FILTER_VALIDATE_INT);
+  $canDelete = $userId !== false && $userId !== null
+    && hasPermission($userId, 'processo_5etapa_excluir_documento', $db);
   $output .= '<div class="row g-3">'; // Usando g-3 para espaçamento entre colunas
   foreach ($result as $row) {
     $icone = getIcone($row['anexo_arquivo_ext']);

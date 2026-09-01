@@ -46,8 +46,49 @@
 										</select>
 									</div>
 								</div>
+								<?php if ($viewData['user']->isAdmin()) : ?>
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label for="select_search_municipio">Município:</label>
+											<select class="form-control" name="select_search_municipio" id="select_search_municipio">
+												<option value="">-- Todos os Municípios --</option>
+												<?php foreach ($viewData['municipios'] as $municipio) : ?>
+													<option value="<?php echo (int) $municipio['municipio_id']; ?>">
+														<?php echo htmlspecialchars($municipio['municipio_name'] . ' - ' . $municipio['municipio_uf'], ENT_QUOTES, 'UTF-8'); ?>
+													</option>
+												<?php endforeach; ?>
+											</select>
+										</div>
+									</div>
+								<?php endif; ?>
 							</div>
 							<div class="row">
+								<div class="col-lg-3">
+									<div class="form-group">
+										<label for="select_search_etapa">Etapa atual:</label>
+										<select class="form-control" id="select_search_etapa">
+											<option value="">-- Todas as Etapas --</option>
+											<?php foreach ($viewData['etapasFiltro'] as $etapa) : ?>
+												<option value="<?php echo (int) $etapa['etapa_processo_id']; ?>">
+													<?php echo htmlspecialchars($etapa['etapa_nome'], ENT_QUOTES, 'UTF-8'); ?>
+												</option>
+											<?php endforeach; ?>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-3">
+									<div class="form-group">
+										<label for="select_search_percentual">Porcentagem concluída:</label>
+										<select class="form-control" id="select_search_percentual">
+											<option value="">-- Todas as Faixas --</option>
+											<option value="0-25">0% a 25%</option>
+											<option value="26-50">26% a 50%</option>
+											<option value="51-70">51% a 70%</option>
+											<option value="71-99">71% a 99%</option>
+											<option value="100">100%</option>
+										</select>
+									</div>
+								</div>
 								<div class="col-lg-6">
 									<div class="form-group">
 										<div class="form-row">

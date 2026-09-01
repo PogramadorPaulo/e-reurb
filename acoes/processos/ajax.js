@@ -10,6 +10,9 @@ var query = ''; // Consulta inicial
 var tipos = ''; // Tipo inicial
 var dataInicial = ''; // Data inicial
 var dataFinal = ''; // Data final
+var municipio = ''; // Município selecionado pelo administrador
+var etapaAtual = ''; // Primeira etapa ainda não concluída
+var percentual = ''; // Faixa de conclusão
 
 // Alternar a visibilidade dos filtros
 $('#toggleFilters').on('click', function () {
@@ -28,11 +31,11 @@ function validarDatas(dataInicial, dataFinal) {
 }
 
 // Função para carregar dados
-function loadData(page = 1, query = '', tipos = '', dataInicial = '', dataFinal = '') {
+function loadData(page = 1, query = '', tipos = '', dataInicial = '', dataFinal = '', municipio = '', etapaAtual = '', percentual = '') {
     if (!validarDatas(dataInicial, dataFinal)) return;
 
     $('#loader').show();
-    id_municipio = $('#idMunicipio').val();
+    var idMunicipioUsuario = $('#idMunicipio').val();
     $.ajax({
         url: "acoes/processos/fetch.php",
         method: "POST",
@@ -42,7 +45,10 @@ function loadData(page = 1, query = '', tipos = '', dataInicial = '', dataFinal 
             tipo: tipos,
             data_inicial: dataInicial,
             data_final: dataFinal,
-            id_municipio: id_municipio
+            id_municipio: idMunicipioUsuario,
+            municipio_filtro: municipio,
+            etapa_atual: etapaAtual,
+            percentual: percentual
         },
         success: function (data) {
             $('#dynamic_content').html(data);
@@ -56,7 +62,7 @@ function loadData(page = 1, query = '', tipos = '', dataInicial = '', dataFinal 
 
 // Recarregar dados
 function recarregarDados() {
-    loadData(currentPage, query, tipos, dataInicial, dataFinal);
+    loadData(currentPage, query, tipos, dataInicial, dataFinal, municipio, etapaAtual, percentual);
 }
 
 // Configurar eventos de filtros e paginação
@@ -73,6 +79,24 @@ function configurarFiltros() {
         recarregarDados();
     });
 
+    $('#select_search_municipio').on('change', function () {
+        municipio = $(this).val();
+        currentPage = 1;
+        recarregarDados();
+    });
+
+    $('#select_search_etapa').on('change', function () {
+        etapaAtual = $(this).val();
+        currentPage = 1;
+        recarregarDados();
+    });
+
+    $('#select_search_percentual').on('change', function () {
+        percentual = $(this).val();
+        currentPage = 1;
+        recarregarDados();
+    });
+
     $('#btn_search').on('click', function () {
         dataInicial = $('#search_data_inicial').val();
         dataFinal = $('#search_data_final').val();
@@ -83,7 +107,7 @@ function configurarFiltros() {
     $(document).on('click', '.page-link', function () {
         var page = $(this).data('page_number');
         if (page) {
-            loadData(page, query, tipos, dataInicial, dataFinal);
+            loadData(page, query, tipos, dataInicial, dataFinal, municipio, etapaAtual, percentual);
         }
     });
 }

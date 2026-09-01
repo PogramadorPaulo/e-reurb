@@ -161,8 +161,8 @@ if (isset($_POST["id"])) {
 				<div class="form-group">
 					<label>União Estável:</label>
 					<select class="form-control" name="uniao" id="uniao">
-						<option class="" ' . (($row["uniao_estavel"] == 'Divorciado') ? 'Sim' : '') . ' value="Sim">Sim</option>
-						<option class="" ' . (($row["uniao_estavel"] == 'Divorciado') ? 'Não' : '') . ' value="Não">Não</option>
+						<option class="" ' . (($row["uniao_estavel"] == 'Sim') ? 'selected' : '') . ' value="Sim">Sim</option>
+						<option class="" ' . (($row["uniao_estavel"] == 'Não') ? 'selected' : '') . ' value="Não">Não</option>
 					</select>
 				</div>
 			</div>

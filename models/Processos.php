@@ -2,6 +2,17 @@
 
 class Processos extends model
 {
+	public function getEtapas()
+	{
+		$sql = $this->db->prepare("
+			SELECT etapa_processo_id, etapa_nome
+			FROM etapas_processo
+			ORDER BY etapa_ordem ASC
+		");
+		$sql->execute();
+
+		return $sql->fetchAll(PDO::FETCH_ASSOC);
+	}
 	
 	public function get($id, $idMunicipio)
 	{

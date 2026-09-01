@@ -1,6 +1,8 @@
 <?php
 require_once('../../../config.php');
 
+header('Content-Type: application/json; charset=utf-8');
+
 
 $idUser = filter_input(INPUT_POST, "idUser", FILTER_SANITIZE_NUMBER_INT);
 $id = filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
@@ -125,9 +127,9 @@ $sql->bindValue(":pai", $pai);
 $sql->bindValue(":mae", $mae);
 $sql->bindValue(":data_update", date('Y-m-d H:i'));
 $sql->bindValue(":id", $id);
-$sql->execute();
 
-if ($sql->rowCount() > 0) {
+try {
+    $sql->execute();
 
     $atividade = $db->prepare("
         INSERT INTO tb_atividades_usuarios 
@@ -155,4 +157,12 @@ if ($sql->rowCount() > 0) {
         'icon' => 'success',
     );
     echo json_encode($response);
+} catch (PDOException $e) {
+    http_response_code(500);
+    echo json_encode([
+        'status' => 'error',
+        'tittle' => 'Erro',
+        'message' => 'Não foi possível salvar as alterações.',
+        'icon' => 'error',
+    ]);
 }

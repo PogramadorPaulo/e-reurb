@@ -33,6 +33,10 @@ class processosController extends controller
 
 		$idMunicipio = $u->getMunicipio();
 		$this->arrayInfo['idMunicipio'] = $idMunicipio;
+
+		$this->arrayInfo['municipios'] = $u->isAdmin() ? (new Municipio())->getAtivos() : array();
+		$this->arrayInfo['etapasFiltro'] = (new Processos())->getEtapas();
+
 		$this->loadTemplate('processos', $this->arrayInfo);
 	}
 	public function view($id)

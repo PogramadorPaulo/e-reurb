@@ -18,8 +18,8 @@ $limit = 20;
 $page = isset($_POST['page']) && $_POST['page'] > 1 ? intval($_POST['page']) : 1;
 $start = ($page - 1) * $limit;
 
-// Verifica se o usuário é administrador
-$userQuery = $db->prepare("SELECT admin FROM users WHERE id = :userId");
+// Verifica o perfil e o município vinculados ao usuário autenticado
+$userQuery = $db->prepare("SELECT admin, user_municipio FROM users WHERE id = :userId");
 $userQuery->bindValue(':userId', $userId, PDO::PARAM_INT);
 $userQuery->execute();
 $userData = $userQuery->fetch(PDO::FETCH_ASSOC);
@@ -33,21 +33,92 @@ if (!$userData) {
 }
 
 $isAdmin = (int)$userData['admin'] === 1;
+$municipioFiltro = null;
+$etapaAtualFiltro = null;
+$percentualFiltro = isset($_POST['percentual']) ? $_POST['percentual'] : '';
+$faixasPercentuais = [
+  '0-25' => [0, 25],
+  '26-50' => [26, 50],
+  '51-70' => [51, 70],
+  '71-99' => [71, 99],
+  '100' => [100, 100]
+];
+
+if (isset($_POST['etapa_atual']) && $_POST['etapa_atual'] !== '') {
+  $etapaAtualFiltro = filter_var($_POST['etapa_atual'], FILTER_VALIDATE_INT);
+  if ($etapaAtualFiltro === false || $etapaAtualFiltro <= 0) {
+    echo json_encode(['status' => 'error', 'message' => 'Etapa inválida.']);
+    exit;
+  }
+}
+
+if ($percentualFiltro !== '' && !isset($faixasPercentuais[$percentualFiltro])) {
+  echo json_encode(['status' => 'error', 'message' => 'Faixa de porcentagem inválida.']);
+  exit;
+}
 
 // Query base para buscar processos
-$query = "SELECT * FROM procedures INNER JOIN tb_municipios ON procedures.municipio = tb_municipios.municipio_id WHERE 1=1  ";
+$estatisticasSql = "
+  SELECT
+    ep.processo_id,
+    COUNT(*) AS total_etapas,
+    SUM(CASE WHEN ep.procedimento_status = 4 THEN 1 ELSE 0 END) AS etapas_concluidas,
+    (
+      SELECT ep_atual.etapa_id
+      FROM etapas_procedimentos ep_atual
+      INNER JOIN etapas_processo etapa_atual
+        ON etapa_atual.etapa_processo_id = ep_atual.etapa_id
+      WHERE ep_atual.processo_id = ep.processo_id
+        AND ep_atual.procedimento_status <> 4
+      ORDER BY etapa_atual.etapa_ordem ASC
+      LIMIT 1
+    ) AS etapa_atual_id
+  FROM etapas_procedimentos ep
+  GROUP BY ep.processo_id
+";
 
-// Adiciona o filtro de município caso o usuário não seja admin
-if (!$isAdmin) {
-  if (isset($_POST['id_municipio']) && !empty($_POST['id_municipio'])) {
-    $query .= " AND municipio = :id_municipio";
-  } else {
+$query = "
+  SELECT
+    procedures.*,
+    tb_municipios.*,
+    COALESCE(estatisticas.total_etapas, 0) AS total_etapas,
+    COALESCE(estatisticas.etapas_concluidas, 0) AS etapas_concluidas,
+    estatisticas.etapa_atual_id,
+    CASE
+      WHEN COALESCE(estatisticas.total_etapas, 0) = 0 THEN 0
+      ELSE ROUND((estatisticas.etapas_concluidas / estatisticas.total_etapas) * 100, 2)
+    END AS percentual_concluido
+  FROM procedures
+  INNER JOIN tb_municipios ON procedures.municipio = tb_municipios.municipio_id
+  LEFT JOIN ($estatisticasSql) estatisticas ON estatisticas.processo_id = procedures.cod_procedimento
+  WHERE 1=1
+";
+
+// Administradores podem escolher qualquer município; os demais ficam restritos ao vínculo da conta
+if ($isAdmin) {
+  if (isset($_POST['municipio_filtro']) && $_POST['municipio_filtro'] !== '') {
+    $municipioFiltro = filter_var($_POST['municipio_filtro'], FILTER_VALIDATE_INT);
+    if ($municipioFiltro === false || $municipioFiltro <= 0) {
+      echo json_encode([
+        'status' => 'error',
+        'message' => 'Município inválido.'
+      ]);
+      exit;
+    }
+  }
+} else {
+  $municipioFiltro = filter_var($userData['user_municipio'], FILTER_VALIDATE_INT);
+  if ($municipioFiltro === false || $municipioFiltro <= 0) {
     echo json_encode([
       'status' => 'error',
-      'message' => 'Município não informado.'
+      'message' => 'Usuário sem município válido associado.'
     ]);
     exit;
   }
+}
+
+if ($municipioFiltro !== null) {
+  $query .= " AND procedures.municipio = :id_municipio";
 }
 
 // Adiciona filtros opcionais
@@ -63,15 +134,21 @@ if (!empty($_POST['data_inicial'])) {
 if (!empty($_POST['data_final'])) {
   $query .= " AND data_cad <= :data_final";
 }
+if ($etapaAtualFiltro !== null) {
+  $query .= " AND estatisticas.etapa_atual_id = :etapa_atual";
+}
+if ($percentualFiltro !== '') {
+  $query .= " AND (CASE WHEN COALESCE(estatisticas.total_etapas, 0) = 0 THEN 0 ELSE ROUND((estatisticas.etapas_concluidas / estatisticas.total_etapas) * 100, 2) END) BETWEEN :percentual_minimo AND :percentual_maximo";
+}
 
 // Ordenação e Paginação
-$query .= " ORDER BY id DESC";
+$query .= " ORDER BY procedures.id DESC";
 $filter_query = $query . " LIMIT :start, :limit";
 
 // Conta o total de registros sem paginação
 $total_statement = $db->prepare($query);
-if (!$isAdmin && isset($_POST['id_municipio'])) {
-  $total_statement->bindValue(':id_municipio', $_POST['id_municipio'], PDO::PARAM_INT);
+if ($municipioFiltro !== null) {
+  $total_statement->bindValue(':id_municipio', $municipioFiltro, PDO::PARAM_INT);
 }
 if (!empty($_POST['query'])) {
   $total_statement->bindValue(':query', '%' . str_replace(' ', '%', $_POST['query']) . '%', PDO::PARAM_STR);
@@ -85,6 +162,13 @@ if (!empty($_POST['data_inicial'])) {
 if (!empty($_POST['data_final'])) {
   $total_statement->bindValue(':data_final', $_POST['data_final'], PDO::PARAM_STR);
 }
+if ($etapaAtualFiltro !== null) {
+  $total_statement->bindValue(':etapa_atual', $etapaAtualFiltro, PDO::PARAM_INT);
+}
+if ($percentualFiltro !== '') {
+  $total_statement->bindValue(':percentual_minimo', $faixasPercentuais[$percentualFiltro][0], PDO::PARAM_INT);
+  $total_statement->bindValue(':percentual_maximo', $faixasPercentuais[$percentualFiltro][1], PDO::PARAM_INT);
+}
 $total_statement->execute();
 $total_data = $total_statement->rowCount();
 
@@ -92,8 +176,8 @@ $total_data = $total_statement->rowCount();
 $filter_statement = $db->prepare($filter_query);
 $filter_statement->bindValue(':start', $start, PDO::PARAM_INT);
 $filter_statement->bindValue(':limit', $limit, PDO::PARAM_INT);
-if (!$isAdmin && isset($_POST['id_municipio'])) {
-  $filter_statement->bindValue(':id_municipio', $_POST['id_municipio'], PDO::PARAM_INT);
+if ($municipioFiltro !== null) {
+  $filter_statement->bindValue(':id_municipio', $municipioFiltro, PDO::PARAM_INT);
 }
 if (!empty($_POST['query'])) {
   $filter_statement->bindValue(':query', '%' . str_replace(' ', '%', $_POST['query']) . '%', PDO::PARAM_STR);
@@ -106,6 +190,13 @@ if (!empty($_POST['data_inicial'])) {
 }
 if (!empty($_POST['data_final'])) {
   $filter_statement->bindValue(':data_final', $_POST['data_final'], PDO::PARAM_STR);
+}
+if ($etapaAtualFiltro !== null) {
+  $filter_statement->bindValue(':etapa_atual', $etapaAtualFiltro, PDO::PARAM_INT);
+}
+if ($percentualFiltro !== '') {
+  $filter_statement->bindValue(':percentual_minimo', $faixasPercentuais[$percentualFiltro][0], PDO::PARAM_INT);
+  $filter_statement->bindValue(':percentual_maximo', $faixasPercentuais[$percentualFiltro][1], PDO::PARAM_INT);
 }
 $filter_statement->execute();
 $result = $filter_statement->fetchAll(PDO::FETCH_ASSOC);
@@ -144,15 +235,9 @@ if ($total_data > 0) {
       ? '<p class="mb-0"><strong>Justificativa:</strong> ' . htmlspecialchars($ultimoHistorico['h_justificativa'], ENT_QUOTES, 'UTF-8') . '</p>'
       : '';
 
-    // Buscar porcentagem de etapas concluídas
-    $stmtEstatisticas = $db->prepare("SELECT COUNT(*) AS total, SUM(CASE WHEN ep.procedimento_status = 4 THEN 1 ELSE 0 END) AS concluidas FROM etapas_procedimentos ep WHERE ep.processo_id = :cod_procedimento");
-    $stmtEstatisticas->bindValue(':cod_procedimento', $row['cod_procedimento'], PDO::PARAM_INT);
-    $stmtEstatisticas->execute();
-    $estatisticas = $stmtEstatisticas->fetch(PDO::FETCH_ASSOC);
-
-    $totalEtapas = (int)$estatisticas['total'];
-    $etapasConcluidas = (int)$estatisticas['concluidas'];
-    $porcentagemConcluida = $totalEtapas > 0 ? round(($etapasConcluidas / $totalEtapas) * 100, 2) : 0;
+    $totalEtapas = (int)$row['total_etapas'];
+    $etapasConcluidas = (int)$row['etapas_concluidas'];
+    $porcentagemConcluida = (float)$row['percentual_concluido'];
 
     // Calculando a cor com base na porcentagem de conclusão
     if ($porcentagemConcluida <= 25) {

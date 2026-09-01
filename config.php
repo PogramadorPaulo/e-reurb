@@ -5,7 +5,7 @@ require_once 'environment.php';
 
 $config = array();
 if (ENVIRONMENT == 'development') {
-	define("BASE_URL", "http://localhost/e-reurb-novo/");
+	define("BASE_URL", "http://localhost:8090/e-reurb-novo/");
 	define("PATH_SITE", "../");
 	define("NAME", "E-reurb");
 	define("DESCRICAO", "E-reurb");
@@ -31,7 +31,7 @@ if (ENVIRONMENT == 'development') {
 	define("TAMANHO_UPLOAD", "20");
 
 	// BASE DE DADOS
-	$config['dbname'] = 'bd_reurb_novo';
+	$config['dbname'] = 'ereurb27_bd';
 	$config['host'] = 'localhost';
 	$config['dbuser'] = 'root';
 	$config['dbpass'] = '';
@@ -129,8 +129,12 @@ function isEtapaConcluida($processoId, $etapaId, $db)
 		$stmt->execute();
 		$result = $stmt->fetch(PDO::FETCH_ASSOC);
 
+		if (!$result) {
+			return false;
+		}
+
 		// Retorna true se o status da etapa for "concluido"
-		return isset($result['procedimento_status']) && $result['procedimento_status'] == '4' or $result['procedimento_status'] == '5';
+		return in_array((string) $result['procedimento_status'], ['4', '5'], true);
 	} catch (Exception $e) {
 		error_log("Erro ao verificar etapa: " . $e->getMessage());
 		return false;

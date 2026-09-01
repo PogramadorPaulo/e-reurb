@@ -43,7 +43,7 @@ class UsersController extends controller
 			$name = $_POST['name'];
 			$email = $_POST['email'];
 			$grupo = $_POST['grupo'];
-			$admin = $_POST['admin'];
+			$admin = $_POST['admin'] ?? 0;
 
 			$users->addUser($name, $email, $grupo, $admin);
 			header("Location: " . BASE_URL . 'users/add');
@@ -89,11 +89,10 @@ class UsersController extends controller
 			$name = $_POST['name'];
 			$email = $_POST['email'];
 			$grupo = $_POST['grupo'];
-			$admin = $_POST['admin'];
-			$setor = $_POST['setor'];
+			$admin = $_POST['admin'] ?? 0;
 
 
-			$users->editUser($id_user, $name, $email, $grupo, $admin, $setor);
+			$users->editUser($id_user, $name, $email, $grupo, $admin);
 			header("Location: " . BASE_URL . 'users');
 			exit;
 		} else {

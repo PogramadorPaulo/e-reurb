@@ -65,7 +65,13 @@ $novoLoteId = $db->lastInsertId(); // Pega o ID do novo lote
 
 // Verifica se a identificação é "sim" para cadastrar os proprietários
 if (strtolower($identificacao) === "sim") {
-    $proprietarios = $_POST['selectProprietarios']; // array de IDs de proprietários
+    $proprietarios = filter_input(
+        INPUT_POST,
+        "selectProprietarios",
+        FILTER_VALIDATE_INT,
+        FILTER_REQUIRE_ARRAY
+    ) ?: [];
+
     // Inserir cada proprietário para este lote
     foreach ($proprietarios as $proprietarioId) {
         $stmt = $db->prepare("
